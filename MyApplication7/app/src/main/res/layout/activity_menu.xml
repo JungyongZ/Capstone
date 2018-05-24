@@ -1,0 +1,65 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+
+    tools:context=".MainActivity" >
+
+<!---
+    <fragment
+
+        android:id="@+id/map"
+
+        android:layout_width="match_parent"
+
+        android:layout_height="250dp"
+
+        class="com.google.android.gms.maps.MapFragment" />
+        -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/resname"
+        android:textSize="45dp"
+        android:background="#fff00000"
+        android:text="가게이름"/>
+
+    <TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+        android:textSize="30dp"
+        android:background="#fff000"
+    android:text="주 메뉴"/>
+
+    <ListView
+        android:id = "@+id/ListView02"
+        android:layout_width="match_parent"
+
+        android:layout_height="250dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="30dp"
+        android:background="#fff000"
+        android:text="서브 메뉴"/>
+
+    <ListView
+        android:id = "@+id/ListView03"
+        android:layout_width="match_parent"
+
+        android:layout_height="250dp" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textSize="30dp"
+        android:textColor="#ff000000"
+        android:background="#fff00006"
+        android:gravity="center_horizontal"
+        android:text="주문하기!"
+        />
+
+</LinearLayout>

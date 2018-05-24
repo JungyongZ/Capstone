@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="음식선택하세용"
+        android:textSize="25dp"/>
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="343dp"
+        android:columnCount="3">
+
+        <ImageButton
+            android:id="@+id/b1"
+            android:layout_width="117dp"
+            android:layout_height="117dp"
+            android:onClick="ClickHansik"
+            android:src="@drawable/hansik" />
+
+        <ImageButton
+            android:id="@+id/b2"
+            android:layout_width="117dp"
+            android:layout_height="117dp"
+            android:onClick="ClickJunggook"
+            android:src="@drawable/junggook" />
+
+        <ImageButton
+            android:id="@+id/b3"
+            android:layout_width="117dp"
+            android:layout_height="117dp"
+            android:onClick="ClickChicken"
+            android:src="@drawable/chicken" />
+
+        <ImageButton
+            android:id="@+id/b4"
+            android:layout_width="117dp"
+            android:layout_height="117dp"
+            android:onClick="Clickpizza"
+            android:src="@drawable/pizza" />
+
+        <ImageButton
+            android:id="@+id/b5"
+            android:layout_width="117dp"
+            android:layout_height="117dp"
+            android:onClick="ClickBunsik"
+            android:src="@drawable/bunsik" />
+
+        <ImageButton
+            android:id="@+id/b6"
+            android:layout_width="117dp"
+            android:layout_height="117dp"
+            android:onClick="ClickDongas"
+            android:src="@drawable/dongas" />
+
+    </GridLayout>
+
+
+
+</LinearLayout>
