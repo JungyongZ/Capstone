@@ -58,6 +58,7 @@
         android:textSize="30dp"
         android:textColor="#ff000000"
         android:background="#fff00006"
+        android:onClick="ClickMe"
         android:gravity="center_horizontal"
         android:text="주문하기!"
         />

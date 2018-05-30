@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent"
+        >
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/res"
+            android:textSize="45dp"
+            android:background="#fff00000"
+            android:text="주문하신 내역"/>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/resname2"
+            android:textSize="45dp"
+
+            android:text=""/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/resname3"
+            android:textSize="45dp"
+
+            android:text=""/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/resname4"
+            android:textSize="45dp"
+
+            android:text=""/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/resname5"
+            android:textSize="45dp"
+
+            android:text=""/>
+
+
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="45dp"
+            android:text="합계 가격 "/>
+
+        <TextView
+            android:id="@+id/resname_sum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="123"
+
+            android:textSize="45dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/btn_shopping_cart"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="#fff00006"
+                android:gravity="center"
+                android:onClick="ClickMe"
+                android:text="주문하기"
+                android:textColor="#ff000000"
+                android:textSize="30dp" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

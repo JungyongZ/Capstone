@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity
             if(list.size()==0){
                 Log.d("noaddress","no_address");
             }else{          /*여기에서 마커, 리스트추가하면될듯*/
-                Log.d("yesADDRESS",list.get(0).getLocality());
+                Log.d("yesADDRESS",list.get(0).toString());
 
             }
         }
