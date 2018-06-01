@@ -186,7 +186,7 @@ protected void showList() {
            list.add(new ListViewItem(id,name, R.drawable.samgyup));
             Log.v("알림","2페이지 진행상황3");
         }
-        CustomAdapter adp = new CustomAdapter(getApplicationContext(), R.layout.list_view, list);
+        CustomAdapter adp = new CustomAdapte    r(getApplicationContext(), R.layout.list_view, list);
         listView.setAdapter(adp);
                Log.v("알림","2페이지 진행상황4");
         //list.deferNotifyDataSetChanged();                     //리스트뷰의 낮은 이해도로 인해 실제로 두 페이지가 동시에 뜨도록 못하고 있는 상황..
