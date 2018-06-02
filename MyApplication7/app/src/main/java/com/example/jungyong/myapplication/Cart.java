@@ -31,7 +31,7 @@ int count=0;
     TextView textView5;
     int tot_price=0;
     String app_url;
-
+    SharedPreferences pref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,19 +48,23 @@ int count=0;
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+        pref = getSharedPreferences("pref", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         count = pref.getInt("count",0);
         if(count==1){
             textView.setText(pref.getString("menu_name1",""));
             tot_price=pref.getInt("menu_price1",0);
             textView5.setText(String.valueOf(tot_price));
+            editor.putInt("tot_price", tot_price);
+            editor.commit();
         }else if(count==2){
             textView.setText(pref.getString("menu_name1",""));
             tot_price=pref.getInt("menu_price1",0);
             textView2.setText(pref.getString("menu_name2",""));
             tot_price+=pref.getInt("menu_price2",0);
             textView5.setText(String.valueOf(tot_price));
+            editor.putInt("tot_price", tot_price);
+            editor.commit();
         }else if(count==3){
             textView.setText(pref.getString("menu_name1",""));
             tot_price=pref.getInt("menu_price1",0);
@@ -69,6 +73,8 @@ int count=0;
             textView3.setText(pref.getString("menu_name3",""));
             tot_price+=pref.getInt("menu_price3",0);
             textView5.setText(String.valueOf(tot_price));
+            editor.putInt("tot_price", tot_price);
+            editor.commit();
         }else if(count==4){
             textView.setText(pref.getString("menu_name1",""));
             tot_price=pref.getInt("menu_price1",0);
@@ -79,11 +85,13 @@ int count=0;
             textView4.setText(pref.getString("menu_name4",""));
             tot_price+=pref.getInt("menu_price4",0);
             textView5.setText(String.valueOf(tot_price));
+            editor.putInt("tot_price", tot_price);
+            editor.commit();
         }
 
     }
     public String KaKaoGo() {
-
+        pref = getSharedPreferences("pref", MODE_PRIVATE);
         HttpsURLConnection conn = null;
         try {
             URL url = new URL("https://kapi.kakao.com/v1/payment/ready"); //요청 URL을 입력
@@ -97,19 +105,22 @@ int count=0;
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             conn.setConnectTimeout(60); //타임아웃 시간 설정 (default : 무한대기)
 
-            Log.d("Testing", "a");
             OutputStream os = conn.getOutputStream();
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8")); //캐릭터셋 설정
 
-            Log.d("Testing", "a");
+            Log.d("Testing1", pref.getString("menu_name1","")+","+pref.getInt("tot_price", 0));
             writer.write(
                     "cid=TC0ONETIME&" +
                             "partner_order_id=partner_order_id&" +
                             "partner_user_id=partner_user_id&" +
-                            "item_name=핫초코&" +
+                            "item_name=" +
+                            pref.getString("menu_name1","") +
+                            "&" +
                             "quantity=1&" +
-                            "total_amount=3000&" +
-                            "vat_amount=200&" +
+                            "total_amount=" +
+                            String.valueOf(pref.getInt("tot_price",0))+
+                            "&" +
+                            "vat_amount=0&" +
                             "tax_free_amount=0&" +
                             "approval_url=https://35.229.177.70:7000&" +
                             "fail_url=https://35.229.177.70:7000&" +
