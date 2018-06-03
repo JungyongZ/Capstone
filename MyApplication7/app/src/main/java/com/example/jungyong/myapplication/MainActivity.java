@@ -19,6 +19,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -52,11 +53,11 @@ public class MainActivity extends AppCompatActivity
     ListView listView;
     Geocoder geocoder;
     private String myJSON=null;
-
-    private static final String TAG_RESULTS = "result1";
-    private static final String TAG_ID = "id";
-    private static final String TAG_NAME = "name";
-    private static final String TAG_ADD = "address";
+    GoogleMap mMap;
+    private static final String TAG_RESULTS = "1Page";
+    private static final String TAG_ID = "M_Name";
+    private static final String TAG_NAME = "M_Location";
+    private static final String TAG_ADD = "M_Tel";
 
     private JSONArray peoples = null;
 
@@ -69,6 +70,8 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+
+       geocoder = new Geocoder(this);
 
 
         FragmentManager fragmentManager = getFragmentManager();
@@ -99,9 +102,9 @@ public class MainActivity extends AppCompatActivity
 
 
     @Override
-    public void onMapReady(final GoogleMap map) {
-
-
+    public void onMapReady(GoogleMap map) {
+mMap = map;
+/*
         LatLng SEOUL = new LatLng(37.56, 126.97);
 
 
@@ -119,82 +122,56 @@ public class MainActivity extends AppCompatActivity
         map.moveCamera(CameraUpdateFactory.newLatLng(SEOUL));
 
         map.animateCamera(CameraUpdateFactory.zoomTo(10));
-
+*/
     }
 
-    /*추후에 Intent값을 받아서 어떤음식종류인지 확인하고, 그 음식종류에 따라 리스트를 생성할수 있도록 하기
-      1차적으로 데이터베이스로부터 값을 받으면 여러 음식점들을 표시하기                               */
-    public void MakeList() throws JSONException {
 
-
-
-        CustomAdapter adp = new CustomAdapter(getApplicationContext(), R.layout.list_view, list);
-        listView.setAdapter(adp);
-
-
-        geocoder = new Geocoder(this);
-        List<Address> list = null;
-        /*   http://bitsoul.tistory.com/135    --참조사이트,역지오코딩*/
-        try{
-            double d1 = Double.parseDouble("37.52487");
-            double d2 = Double.parseDouble("126.92723");
-            list = geocoder.getFromLocation(d1, d2, 10);
-        } catch (IOException e) {
-            e.printStackTrace();
-            Log.d("geocoder","input&output err");
-        }
-        if(list!=null){
-            if(list.size()==0){
-                Log.d("noaddress","no_address");
-            }else{          /*여기에서 마커, 리스트추가하면될듯*/
-                Log.d("yesADDRESS",list.get(0).toString());
-
-            }
-        }
-
-        /* 지도에 여러개의 마커를 생성하기 최대10(개수조정)개까지 */
-        for(int i=0; i<10; i++){
-
-        }
-
-
-    }
-///////////////////////
 protected void showList() {
     try {
-
+        geocoder = new Geocoder(this);
         JSONObject jsonObj = new JSONObject(myJSON);
         Log.v("알림","2페이지 결과2"+jsonObj);
         peoples = jsonObj.getJSONArray(TAG_RESULTS);        //Tag_Result의 값에 따라 희망 배열 순번의 값을 불러옴을 확인
         Log.v("알림","2페이지 결과3"+peoples);
-
+LatLng latLng;
         for (int i = 0; i < peoples.length(); i++) {
-           Log.d("peoplelength", String.valueOf(peoples.length()));
+        //   Log.d("peoplelength", String.valueOf(peoples.length()));
             JSONObject c = peoples.getJSONObject(i);
             String id = c.getString(TAG_ID);
             String name = c.getString(TAG_NAME);
             String address = c.getString(TAG_ADD);
-            Log.d("id name address:",id+name+address);
-            Log.v("알림","2페이지 진행상황1");
-            HashMap<String, String> persons = new HashMap<String, String>();
+       //     Log.v("id name address:",id+name+address);
+            Log.v("알림k", name);
+         //   Log.v("알림","2페이지 진행상황1");
+            list.add(new ListViewItem(id,name, R.drawable.samgyup));
+     //  Log.v("Lat", String.valueOf(geocoder.getFromLocationName(name,10).get(0).getLatitude()));
 
-            persons.put(TAG_ID, id);
-            persons.put(TAG_NAME, name);
-            persons.put(TAG_ADD, address);
-            Log.v("알림","2페이지 진행상황2");
-            personList.add(persons);
-           list.add(new ListViewItem(id,name, R.drawable.samgyup));
-            Log.v("알림","2페이지 진행상황3");
+double a1=geocoder.getFromLocationName(name,10).get(0).getLatitude();
+double a2= geocoder.getFromLocationName(name,10).get(0).getLongitude();
+
+
+            MarkerOptions markerOptions = new MarkerOptions();
+           latLng=new LatLng(a1,a2);
+            markerOptions
+                    .position(latLng)
+                    .title(id);
+      mMap.addMarker(markerOptions);
+            if(i==0) {
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                mMap.animateCamera(CameraUpdateFactory.zoomTo(13));
+
+            }
+
         }
         CustomAdapter adp = new CustomAdapter(getApplicationContext(), R.layout.list_view, list);
         listView.setAdapter(adp);
                Log.v("알림","2페이지 진행상황4");
-        //list.deferNotifyDataSetChanged();                     //리스트뷰의 낮은 이해도로 인해 실제로 두 페이지가 동시에 뜨도록 못하고 있는 상황..
-        //list.setAdapter(adapter);                             //MainActivity.java 내용을 복사 붙여넣기 후, 그대로 사용하였고 이로인해 문제가 생긴것으로 확인
 
-        Log.v("알림","2페이지 진행상황5");
+
 
     } catch (JSONException e) {
+        e.printStackTrace();
+    } catch (IOException e) {
         e.printStackTrace();
     }
 
