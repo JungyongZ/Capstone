@@ -3,10 +3,13 @@ package com.example.jungyong.myapplication;
 import android.app.FragmentManager;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -36,11 +39,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,7 +54,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity
 
         implements OnMapReadyCallback {
-    ArrayList<ListViewItem> list = new ArrayList<ListViewItem>();
+    ArrayList<ListViewItem2> list = new ArrayList<ListViewItem2>();
     ListView listView;
     Geocoder geocoder;
     private String myJSON=null;
@@ -57,7 +62,7 @@ public class MainActivity extends AppCompatActivity
     private static final String TAG_RESULTS = "1Page";
     private static final String TAG_ID = "M_Name";
     private static final String TAG_NAME = "M_Location";
-    private static final String TAG_ADD = "M_Tel";
+    private static final String TAG_ADD = "M_pic_url";
 
     private JSONArray peoples = null;
 
@@ -72,8 +77,8 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
        geocoder = new Geocoder(this);
-
-
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
         FragmentManager fragmentManager = getFragmentManager();
 
         MapFragment mapFragment = (MapFragment)fragmentManager
@@ -104,46 +109,44 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onMapReady(GoogleMap map) {
 mMap = map;
-/*
-        LatLng SEOUL = new LatLng(37.56, 126.97);
-
-
-        MarkerOptions markerOptions = new MarkerOptions();
-
-        markerOptions.position(SEOUL);
-
-        markerOptions.title("서울");
-
-        markerOptions.snippet("한국의 수도");
-
-        map.addMarker(markerOptions);
-
-
-        map.moveCamera(CameraUpdateFactory.newLatLng(SEOUL));
-
-        map.animateCamera(CameraUpdateFactory.zoomTo(10));
-*/
     }
 
 
 protected void showList() {
+   Bitmap bm = null;
+
     try {
         geocoder = new Geocoder(this);
         JSONObject jsonObj = new JSONObject(myJSON);
-        Log.v("알림","2페이지 결과2"+jsonObj);
+        //Log.v("알림","2페이지 결과2"+jsonObj);
         peoples = jsonObj.getJSONArray(TAG_RESULTS);        //Tag_Result의 값에 따라 희망 배열 순번의 값을 불러옴을 확인
-        Log.v("알림","2페이지 결과3"+peoples);
+      //  Log.v("알림","2페이지 결과3"+peoples);
 LatLng latLng;
         for (int i = 0; i < peoples.length(); i++) {
-        //   Log.d("peoplelength", String.valueOf(peoples.length()));
+
             JSONObject c = peoples.getJSONObject(i);
             String id = c.getString(TAG_ID);
             String name = c.getString(TAG_NAME);
             String address = c.getString(TAG_ADD);
        //     Log.v("id name address:",id+name+address);
-            Log.v("알림k", name);
+          //  Log.v("알림k", name);
          //   Log.v("알림","2페이지 진행상황1");
-            list.add(new ListViewItem(id,name, R.drawable.samgyup));
+            try {
+                URL url = new URL(address);
+                URLConnection conn = url.openConnection();
+                conn.connect();
+                BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
+               bm = BitmapFactory.decodeStream(bis);
+                Log.v("asaaa", String.valueOf(bis));
+                bis.close();
+
+
+               // imgView.setImageBitmap(bm);
+            } catch (Exception e) {
+            }
+
+
+            list.add(new ListViewItem2(id,name, bm));
      //  Log.v("Lat", String.valueOf(geocoder.getFromLocationName(name,10).get(0).getLatitude()));
 
 double a1=geocoder.getFromLocationName(name,10).get(0).getLatitude();
@@ -163,7 +166,7 @@ double a2= geocoder.getFromLocationName(name,10).get(0).getLongitude();
             }
 
         }
-        CustomAdapter adp = new CustomAdapter(getApplicationContext(), R.layout.list_view, list);
+        CustomAdapter2 adp = new CustomAdapter2(getApplicationContext(), R.layout.list_view, list);
         listView.setAdapter(adp);
                Log.v("알림","2페이지 진행상황4");
 
@@ -214,5 +217,7 @@ double a2= geocoder.getFromLocationName(name,10).get(0).getLongitude();
         GetDataJSON g = new GetDataJSON();
         g.execute(url);
     }
+
+
 
 }
