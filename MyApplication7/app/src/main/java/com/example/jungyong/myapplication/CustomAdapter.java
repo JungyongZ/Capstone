@@ -43,12 +43,12 @@ public class CustomAdapter extends BaseAdapter {
 
         TextView txtTitle = (TextView)convertview.findViewById(R.id.txtTitlte);
         TextView txtContent = (TextView)convertview.findViewById(R.id.txtContent);
-        ImageView imgIcon = (ImageView)convertview.findViewById(R.id.imgIcon);
+
 
         ListViewItem dto = list.get(position);
         txtTitle.setText(dto.getTitle());
         txtContent.setText(dto.getContent());
-        imgIcon.setImageResource(dto.getImgIcon());
+
         return convertview;
     }
 

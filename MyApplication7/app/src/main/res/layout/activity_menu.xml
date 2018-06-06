@@ -8,48 +8,85 @@
 
     tools:context=".MainActivity" >
 
-    <TextView
+    <LinearLayout
+        android:layout_weight="1.3"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/resname"
-        android:textSize="45dp"
-        android:background="#fff00000"
-        android:text="가게이름"/>
-
-    <TextView
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/resname"
+            android:layout_width="match_parent"
+            android:textColor="#ff000000"
+            android:gravity="center"
+            android:textSize="30dp"
+            android:layout_weight="1"
+            android:text="키와마루아지"
+            android:layout_height="match_parent" />
+        <TextView
+            android:id="@+id/rescon"
+            android:textColor="#ff000000"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="혼잡도 : 바쁨"/>
+        <TextView
+            android:id="@+id/resadd"
+            android:textColor="#ff000000"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="경기도 수원시 팔달구 아주로13번길 22"/>
+        <TextView
+            android:id="@+id/restel"
+            android:textColor="#ff000000"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="031-219-1123"/>
+    </LinearLayout>
+<LinearLayout
+    android:layout_weight="1.5"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-        android:textSize="30dp"
-        android:background="#fff000"
-    android:text="주 메뉴"/>
+    android:layout_height="match_parent">
 
-    <ListView
-        android:id = "@+id/ListView02"
-        android:layout_width="match_parent"
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="wrap_content"
+        android:id="@+id/vertical_list"
+        android:layout_height="match_parent" />
+</LinearLayout>
 
-        android:layout_height="250dp" />
+ <LinearLayout
+     android:layout_weight="1"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent">
+     <ListView
+         android:id = "@+id/ListView02"
+         android:layout_width="match_parent"
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="30dp"
-        android:background="#fff000"
-        android:text="서브 메뉴"/>
+         android:layout_height="match_parent" />
+ </LinearLayout>
 
-    <ListView
-        android:id = "@+id/ListView03"
-        android:layout_width="match_parent"
 
-        android:layout_height="250dp" />
+<LinearLayout
+    android:layout_weight="1.6"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:textSize="30dp"
         android:textColor="#ff000000"
-        android:background="#fff00006"
+        android:background="#3333CC"
         android:onClick="ClickMe"
-        android:gravity="center_horizontal"
+        android:gravity="center"
+
         android:text="주문하기!"
         />
+
+</LinearLayout>
+
 
 </LinearLayout>

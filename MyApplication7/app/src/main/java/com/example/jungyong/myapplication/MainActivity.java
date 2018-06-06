@@ -113,14 +113,14 @@ mMap = map;
 
 
 protected void showList() {
-   Bitmap bm = null;
+    Bitmap bm = null;
 
     try {
         geocoder = new Geocoder(this);
         JSONObject jsonObj = new JSONObject(myJSON);
-        //Log.v("알림","2페이지 결과2"+jsonObj);
+Log.v("peoples1", String.valueOf(jsonObj));
         peoples = jsonObj.getJSONArray(TAG_RESULTS);        //Tag_Result의 값에 따라 희망 배열 순번의 값을 불러옴을 확인
-      //  Log.v("알림","2페이지 결과3"+peoples);
+Log.v("peoples2", String.valueOf(peoples.getJSONObject(0)));
 LatLng latLng;
         for (int i = 0; i < peoples.length(); i++) {
 
@@ -128,9 +128,7 @@ LatLng latLng;
             String id = c.getString(TAG_ID);
             String name = c.getString(TAG_NAME);
             String address = c.getString(TAG_ADD);
-       //     Log.v("id name address:",id+name+address);
-          //  Log.v("알림k", name);
-         //   Log.v("알림","2페이지 진행상황1");
+
             try {
                 URL url = new URL(address);
                 URLConnection conn = url.openConnection();
@@ -140,8 +138,6 @@ LatLng latLng;
                 Log.v("asaaa", String.valueOf(bis));
                 bis.close();
 
-
-               // imgView.setImageBitmap(bm);
             } catch (Exception e) {
             }
 

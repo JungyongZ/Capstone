@@ -122,9 +122,9 @@ int count=0;
                             "&" +
                             "vat_amount=0&" +
                             "tax_free_amount=0&" +
-                            "approval_url=https://35.229.177.70:7000&" +
-                            "fail_url=https://35.229.177.70:7000&" +
-                            "cancel_url=https://35.229.177.70:7000"
+                            "approval_url=http://116.32.57.232/Pay_1.php&" +
+                            "fail_url=http://116.32.57.232/Pay_2.php&" +
+                            "cancel_url=http://116.32.57.232/Pay_3.php"
             ); //요청 파라미터를 입력
             writer.flush();
             writer.close();
