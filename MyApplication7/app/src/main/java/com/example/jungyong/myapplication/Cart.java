@@ -43,11 +43,7 @@ int count=0;
         textView5 = (TextView)findViewById(R.id.resname_sum);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-        try {
-            app_url= getURL(KaKaoGo());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+
         pref = getSharedPreferences("pref", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         count = pref.getInt("count",0);
@@ -88,6 +84,12 @@ int count=0;
             editor.putInt("tot_price", tot_price);
             editor.commit();
         }
+        try {
+            app_url= getURL(KaKaoGo());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
 
     }
     public String KaKaoGo() {

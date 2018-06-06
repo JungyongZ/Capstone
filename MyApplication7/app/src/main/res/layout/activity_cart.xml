@@ -23,6 +23,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="#ff000000"
             android:id="@+id/resname2"
             android:textSize="45dp"
 
@@ -30,6 +31,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="#ff000000"
             android:id="@+id/resname3"
             android:textSize="45dp"
 
@@ -38,6 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/resname4"
+            android:textColor="#ff000000"
             android:textSize="45dp"
 
             android:text=""/>
@@ -45,20 +48,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/resname5"
+            android:textColor="#ff000000"
             android:textSize="45dp"
 
             android:text=""/>
 
 
-
-
-
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-
-
-    </LinearLayout>
+</LinearLayout>
     <TextView
 
         android:layout_width="wrap_content"
