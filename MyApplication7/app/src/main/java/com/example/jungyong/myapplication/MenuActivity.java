@@ -49,11 +49,11 @@ public class MenuActivity extends AppCompatActivity {
 
     private String myJSON;
 
-    private static final String TAG_RESULTS = "Market1";
-    private static final String TAG_RESULTS2 = "pic1";
+    private static String TAG_RESULTS = "Market1";
+    private static String TAG_RESULTS2 = "pic1";
     private static final String TAG_ID = "LM_Name";
     private static final String TAG_NAME = "LM_Charge";
-    private static final String TAG_ADD = "MP_pic_url";
+    private static String TAG_ADD = "MP_pic_url";
 
     private JSONArray peoples = null;
 
@@ -71,8 +71,21 @@ public class MenuActivity extends AppCompatActivity {
         String name = intent3.getExtras().getString("name");
         textView = (TextView) findViewById(R.id.resname);
         textView.setText(name);
-
-
+        String tel = intent3.getExtras().getString("tel");
+        textView = (TextView) findViewById(R.id.restel);
+        textView.setText(tel);
+        String con = intent3.getExtras().getString("stat");
+        textView = (TextView) findViewById(R.id.rescon);
+        textView.setText(con);
+      TAG_RESULTS = intent3.getExtras().getString("menu");
+      TAG_RESULTS2 = intent3.getExtras().getString("img");
+      Log.v("TAG_ADD:",TAG_ADD);
+      /*
+        intent2.putExtra("tel",litem3.get(position).tel);
+        intent2.putExtra("menu",litem3.get(position).tag_1);
+        intent2.putExtra("img",litem3.get(position).tag_2);
+        intent2.putExtra("stat",litem3.get(position).con);
+*/
         getData("http://116.32.57.232/PHP_connection.php"); //타깃 도메인
 
 
@@ -168,13 +181,15 @@ Log.v("id,name",id + name);
         ArrayList<VerticalData> data = new ArrayList<>();
         Bitmap bm = null;
         JSONObject jsonObj = null;
+
+        //private static String TAG_ADD = "MP_pic_url";
         try {
-            jsonObj = new JSONObject(myJSON);
+            jsonObj = new JSONObject(myJSON );
             peoples = jsonObj.getJSONArray(TAG_RESULTS2);
             for (int i = 0; i < peoples.length(); i++){
                 JSONObject c = peoples.getJSONObject(i);
                 String add = c.getString(TAG_ADD);
-
+        Log.v("add",add);
                 try {
                     URL url = new URL(add);
                     URLConnection conn = url.openConnection();

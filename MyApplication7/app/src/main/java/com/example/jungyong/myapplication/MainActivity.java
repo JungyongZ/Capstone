@@ -63,10 +63,12 @@ public class MainActivity extends AppCompatActivity
     private static final String TAG_ID = "M_Name";
     private static final String TAG_NAME = "M_Location";
     private static final String TAG_ADD = "M_pic_url";
-
+    private static final String TAG_TEL = "M_Tel";
+    private static final String TAG_MENU = "Tag_1";
+    private static final String TAG_IMG = "Tag_2";
+    private static final String TAG_STA = "LS_State";
     private JSONArray peoples = null;
-
-    private ArrayList<HashMap<String, String>> personList;
+    private ArrayList<ListViewItem3> litem3 = new ArrayList<ListViewItem3>();
 
     @Override
 
@@ -89,7 +91,7 @@ public class MainActivity extends AppCompatActivity
 
         /*  MakeList()함수를 통해 지도에 마커생성, 리스트 만들기를하기 */
         listView = (ListView) findViewById(R.id.ListView01);
-        personList=new ArrayList<HashMap<String, String>>();
+
         getData("http://116.32.57.232/PHP_connection.php");
 
 
@@ -99,6 +101,10 @@ public class MainActivity extends AppCompatActivity
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent2 = new Intent(getApplicationContext(), MenuActivity.class);
                 intent2.putExtra("name",list.get(position).title );
+                intent2.putExtra("tel",litem3.get(position).tel);
+                intent2.putExtra("menu",litem3.get(position).tag_1);
+                intent2.putExtra("img",litem3.get(position).tag_2);
+                intent2.putExtra("stat",litem3.get(position).con);
                 startActivity(intent2);
 
             }
@@ -128,7 +134,17 @@ LatLng latLng;
             String id = c.getString(TAG_ID);
             String name = c.getString(TAG_NAME);
             String address = c.getString(TAG_ADD);
-
+           String tel = c.getString(TAG_TEL);
+           String menu = c.getString(TAG_MENU);
+           String img = c.getString(TAG_IMG);
+           String stat = c.getString(TAG_STA);
+           Log.v("img",img);
+         /*
+            private static final String TAG_TEL = "M_Tel";
+            private static final String TAG_MENU = "Tag_1";
+            private static final String TAG_IMG = "Tag_2";
+            private static final String TAG_STA = "LS_State";
+            */
             try {
                 URL url = new URL(address);
                 URLConnection conn = url.openConnection();
@@ -141,13 +157,14 @@ LatLng latLng;
             } catch (Exception e) {
             }
 
-
+            litem3.add(new ListViewItem3(tel, stat, menu, img));
             list.add(new ListViewItem2(id,name, bm));
      //  Log.v("Lat", String.valueOf(geocoder.getFromLocationName(name,10).get(0).getLatitude()));
 
 double a1=geocoder.getFromLocationName(name,10).get(0).getLatitude();
 double a2= geocoder.getFromLocationName(name,10).get(0).getLongitude();
-
+            Log.v("koko2", String.valueOf(a1));
+            Log.v("koko2", String.valueOf(a2));
 
             MarkerOptions markerOptions = new MarkerOptions();
            latLng=new LatLng(a1,a2);
@@ -156,8 +173,10 @@ double a2= geocoder.getFromLocationName(name,10).get(0).getLongitude();
                     .title(id);
       mMap.addMarker(markerOptions);
             if(i==0) {
+                Log.v("koko3", String.valueOf(a1));
+                Log.v("koko3", String.valueOf(a2));
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                mMap.animateCamera(CameraUpdateFactory.zoomTo(13));
+                mMap.animateCamera(CameraUpdateFactory.zoomTo(12));
 
             }
 
