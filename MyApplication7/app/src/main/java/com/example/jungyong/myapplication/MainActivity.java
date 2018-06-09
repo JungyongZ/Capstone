@@ -3,6 +3,7 @@ package com.example.jungyong.myapplication;
 import android.app.FragmentManager;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Address;
@@ -10,6 +11,8 @@ import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.StrictMode;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -59,6 +62,8 @@ public class MainActivity extends AppCompatActivity
     Geocoder geocoder;
     private String myJSON=null;
     GoogleMap mMap;
+    double congestion;
+    String congestion1;
     private static final String TAG_RESULTS = "1Page";
     private static final String TAG_ID = "M_Name";
     private static final String TAG_NAME = "M_Location";
@@ -67,6 +72,7 @@ public class MainActivity extends AppCompatActivity
     private static final String TAG_MENU = "Tag_1";
     private static final String TAG_IMG = "Tag_2";
     private static final String TAG_STA = "LS_State";
+    private static final String TAG_TNUM = "MI_TableNum";
     private JSONArray peoples = null;
     private ArrayList<ListViewItem3> litem3 = new ArrayList<ListViewItem3>();
 
@@ -138,6 +144,15 @@ LatLng latLng;
            String menu = c.getString(TAG_MENU);
            String img = c.getString(TAG_IMG);
            String stat = c.getString(TAG_STA);
+           String Tnum = c.getString(TAG_TNUM);
+           congestion = Double.parseDouble(stat)/Double.parseDouble(Tnum);
+           if(congestion>0&&congestion<0.33){
+               congestion1 = "가게 혼잡도 : 여유";
+           }else if(congestion>=0.33&&congestion<0.66){
+               congestion1 = "가게 혼잡도 : 보통";
+           }else{
+               congestion1 = "가게 혼잡도 : 바쁨";
+           }
            Log.v("img",img);
          /*
             private static final String TAG_TEL = "M_Tel";
@@ -157,28 +172,34 @@ LatLng latLng;
             } catch (Exception e) {
             }
 
-            litem3.add(new ListViewItem3(tel, stat, menu, img));
+            litem3.add(new ListViewItem3(tel, congestion1, menu, img));
             list.add(new ListViewItem2(id,name, bm));
-     //  Log.v("Lat", String.valueOf(geocoder.getFromLocationName(name,10).get(0).getLatitude()));
+
+       Log.v("koko2", String.valueOf(geocoder.getFromLocationName(name,10).get(0).getLatitude()));
 
 double a1=geocoder.getFromLocationName(name,10).get(0).getLatitude();
 double a2= geocoder.getFromLocationName(name,10).get(0).getLongitude();
             Log.v("koko2", String.valueOf(a1));
             Log.v("koko2", String.valueOf(a2));
+            Log.v("koko20",geocoder.getFromLocationName(name,10).get(0).getLocality());
 
+            Log.v("koko24", String.valueOf(geocoder.getFromLocationName(name,10).get(0).getLocale()));
             MarkerOptions markerOptions = new MarkerOptions();
            latLng=new LatLng(a1,a2);
+            if(i==0) {
+                CameraUpdate yourLocation = CameraUpdateFactory.newLatLngZoom(latLng, 13);
+                mMap.animateCamera(yourLocation);
+                Log.v("koko3", String.valueOf(a1));
+                Log.v("koko3", String.valueOf(a2));
+            //    mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+            //`    mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+
+            }
             markerOptions
                     .position(latLng)
                     .title(id);
       mMap.addMarker(markerOptions);
-            if(i==0) {
-                Log.v("koko3", String.valueOf(a1));
-                Log.v("koko3", String.valueOf(a2));
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                mMap.animateCamera(CameraUpdateFactory.zoomTo(12));
 
-            }
 
         }
         CustomAdapter2 adp = new CustomAdapter2(getApplicationContext(), R.layout.list_view, list);
@@ -232,6 +253,7 @@ double a2= geocoder.getFromLocationName(name,10).get(0).getLongitude();
         GetDataJSON g = new GetDataJSON();
         g.execute(url);
     }
+
 
 
 

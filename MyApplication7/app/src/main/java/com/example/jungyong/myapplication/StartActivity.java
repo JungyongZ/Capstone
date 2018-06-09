@@ -6,8 +6,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 
+
 public class StartActivity extends AppCompatActivity {
     Intent intent;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

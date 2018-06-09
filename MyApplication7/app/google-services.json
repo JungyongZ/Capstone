@@ -1,0 +1,59 @@
+{
+  "project_info": {
+    "project_number": "320387692576",
+    "firebase_url": "https://capstone-ec500.firebaseio.com",
+    "project_id": "capstone-ec500",
+    "storage_bucket": "capstone-ec500.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:320387692576:android:d03cc201e0fa43bb",
+        "android_client_info": {
+          "package_name": "com.example.jungyong.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "320387692576-ut24phfbdqmi91nkrhrk9n9re3t9h6c5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.jungyong.myapplication",
+            "certificate_hash": "61d0e6782a14869d8dc032a622894b0dcf800880"
+          }
+        },
+        {
+          "client_id": "320387692576-q07t3bte9lo9oq9ulevko36egk9s09q4.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "320387692576-q07t3bte9lo9oq9ulevko36egk9s09q4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkXsy-Wtx2E3yIAIAZpAdxAlVIks3j8pc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "320387692576-q07t3bte9lo9oq9ulevko36egk9s09q4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
