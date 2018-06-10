@@ -12,12 +12,14 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,6 +38,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.net.ssl.HttpsURLConnection;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.DatabaseReference;
 
 public class MenuActivity extends AppCompatActivity {
     TextView textView;
@@ -57,6 +61,8 @@ public class MenuActivity extends AppCompatActivity {
 
     private JSONArray peoples = null;
 
+    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    private DatabaseReference databaseReference = firebaseDatabase.getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +96,7 @@ public class MenuActivity extends AppCompatActivity {
 
 
     }
+
 
 
     public void ClickMe(View view){
@@ -126,48 +133,36 @@ Log.v("id,name",id + name);
             listView.setAdapter(adp);
 
 
-               final SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
-               final SharedPreferences.Editor editor = pref.edit();
+            final SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+            final SharedPreferences.Editor editor = pref.edit();
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Intent intent2 = new Intent(getApplicationContext(), Cart.class);
 
-                    if(count==1){
-                        editor.putInt("count", 1);
+                    int reset = pref.getInt("reset",0);
+                    if(reset==1){
+                        count=1;
+                        editor.putInt("reset", 0);
+                        editor.commit();
+                    }
+
+                    if(count==11){
+                        Toast toast1 = Toast.makeText(getApplicationContext(), "장바구니가 꽉 찼습니다.", Toast.LENGTH_SHORT);
+                        toast1.setGravity(Gravity.CENTER, 0, 0);
+                        toast1.show();
+                    }
+                    else{
+                        editor.putInt("count", count);
                         count++;
                         editor.putString("menu_name1", list.get(position).title);
                         editor.putInt("menu_price1", Integer.parseInt(list.get(position).content));
                         editor.commit();
-                        startActivity(intent2);
-                    }else if(count==2){
-                        editor.putInt("count", 2);
-                        count++;
-                        editor.putString("menu_name2", list.get(position).title);
-                        editor.putInt("menu_price2", Integer.parseInt(list.get(position).content));
-                        editor.commit();
-                        startActivity(intent2);
-                    }else if(count==3){
-                        editor.putInt("count", 3);
-                        count++;
-                        editor.putString("menu_name3", list.get(position).title);
-                        editor.putInt("menu_price3", Integer.parseInt(list.get(position).content));
-                        editor.commit();
-                        startActivity(intent2);
-                    }else if(count==4){
-                        editor.putInt("count", 4);
-                        count++;
-                        editor.putString("menu_name4", list.get(position).title);
-                        editor.putInt("menu_price4", Integer.parseInt(list.get(position).content));
-                        editor.commit();
-                        startActivity(intent2);
+                        databaseReference.child("Menu").push().setValue(list.get(position));
+                        //databaseReference.child("Value").push().setValue(list.get(position).content);
+                        Toast toast = Toast.makeText(getApplicationContext(), "장바구니에 추가되었습니다.", Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        toast.show();
                     }
-
-                    if(count==5){
-                        count=1;
-                    }
-
-
                 }
             });
 

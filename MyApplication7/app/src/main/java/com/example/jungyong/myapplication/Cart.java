@@ -22,68 +22,310 @@ import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
+
+
+import android.view.ViewGroup.LayoutParams;
+import android.app.Activity;
+import android.view.Gravity;
+import android.graphics.Color;
+import android.widget.LinearLayout;
+import android.widget.Toast;
+
+import java.util.HashMap;
+
+
 public class Cart extends AppCompatActivity {
-int count=0;
-    TextView textView;
-    TextView textView2;
-    TextView textView3;
-    TextView textView4;
+    int count=0;
     TextView textView5;
     int tot_price=0;
     String app_url;
     SharedPreferences pref;
+    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    private DatabaseReference Menu_Reference = firebaseDatabase.getReference("Menu");
+    private DatabaseReference Value_Reference = firebaseDatabase.getReference("Value");;
+    private DatabaseReference databaseReference = firebaseDatabase.getReference("Restaurant");
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
-        textView = (TextView)findViewById(R.id.resname2);
-        textView2 = (TextView)findViewById(R.id.resname3);
-        textView3 = (TextView)findViewById(R.id.resname4);
-        textView4 = (TextView)findViewById(R.id.resname5);
+
         textView5 = (TextView)findViewById(R.id.resname_sum);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-
         pref = getSharedPreferences("pref", MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
+        final SharedPreferences.Editor editor = pref.edit();
         count = pref.getInt("count",0);
-        if(count==1){
-            textView.setText(pref.getString("menu_name1",""));
-            tot_price=pref.getInt("menu_price1",0);
-            textView5.setText(String.valueOf(tot_price));
-            editor.putInt("tot_price", tot_price);
-            editor.commit();
-        }else if(count==2){
-            textView.setText(pref.getString("menu_name1",""));
-            tot_price=pref.getInt("menu_price1",0);
-            textView2.setText(pref.getString("menu_name2",""));
-            tot_price+=pref.getInt("menu_price2",0);
-            textView5.setText(String.valueOf(tot_price));
-            editor.putInt("tot_price", tot_price);
-            editor.commit();
-        }else if(count==3){
-            textView.setText(pref.getString("menu_name1",""));
-            tot_price=pref.getInt("menu_price1",0);
-            textView2.setText(pref.getString("menu_name2",""));
-            tot_price+=pref.getInt("menu_price2",0);
-            textView3.setText(pref.getString("menu_name3",""));
-            tot_price+=pref.getInt("menu_price3",0);
-            textView5.setText(String.valueOf(tot_price));
-            editor.putInt("tot_price", tot_price);
-            editor.commit();
-        }else if(count==4){
-            textView.setText(pref.getString("menu_name1",""));
-            tot_price=pref.getInt("menu_price1",0);
-            textView2.setText(pref.getString("menu_name2",""));
-            tot_price+=pref.getInt("menu_price2",0);
-            textView3.setText(pref.getString("menu_name3",""));
-            tot_price+=pref.getInt("menu_price3",0);
-            textView4.setText(pref.getString("menu_name4",""));
-            tot_price+=pref.getInt("menu_price4",0);
-            textView5.setText(String.valueOf(tot_price));
-            editor.putInt("tot_price", tot_price);
-            editor.commit();
-        }
+
+        Menu_Reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(final DataSnapshot dataSnapshot) {
+
+                for (final DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    final LinearLayout container = (LinearLayout)findViewById(R.id.dynamicArea);
+                    if(count==1) {
+                        final TextView topTV1 = new TextView(Cart.this);
+                        topTV1.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+                        topTV1.setText("" + snapshot.child("title").getValue());
+                        topTV1.setTextColor(Color.BLACK);
+                        topTV1.setTextSize(30);
+                        topTV1.setPadding(20, 10, 10, 10);
+                        container.addView(topTV1);
+                        tot_price = Integer.parseInt("" + snapshot.child("content").getValue());
+                        textView5.setText(String.valueOf(tot_price));
+                        editor.putInt("tot_price", tot_price);
+                        editor.commit();
+                        topTV1.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                Toast toast = Toast.makeText(getApplicationContext(), "삭제되었습니다.", Toast.LENGTH_SHORT);
+                                toast.setGravity(Gravity.CENTER, 0, 0);
+                                toast.show();
+
+                                Menu_Reference.child("Menu").child("title").removeValue();
+                                tot_price= tot_price - Integer.parseInt(""+snapshot.child("content").getValue());
+                                Menu_Reference.child("Menu").child("content").removeValue();
+                                container.removeView(topTV1);
+                                textView5.setText(String.valueOf(tot_price));
+                                count = count -1;
+//
+                            }
+                        });
+                    }
+
+                    else if(count==2) {
+                        final TextView topTV2 = new TextView(Cart.this);
+                        topTV2.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+                        topTV2.setText("" + snapshot.getValue());
+                        topTV2.setTextColor(Color.BLACK);
+                        topTV2.setTextSize(30);
+                        topTV2.setPadding(20, 10, 10, 10);
+                        container.addView(topTV2);
+
+                        topTV2.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                Toast toast = Toast.makeText(getApplicationContext(), "삭제되었습니다.", Toast.LENGTH_SHORT);
+                                toast.setGravity(Gravity.CENTER, 0, 0);
+                                toast.show();
+
+                                Menu_Reference.child(snapshot.getKey()).removeValue();
+                                container.removeView(topTV2);
+//                                    Value_Reference.addValueEventListener(new ValueEventListener() {
+//                                        SharedPreferences.Editor editor = pref.edit();
+//                                        @Override
+//                                        public void onDataChange(DataSnapshot dataSnapshot) {
+//                                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+//                                                if(count==2) {
+//                                                   count = count -1;
+//                                                }
+//                                                else if(count==1) {
+//                                                    Value_Reference.child(snapshot.getKey()).removeValue();
+//                                                    tot_price = tot_price - Integer.parseInt("" + snapshot.getValue());
+//                                                    textView5.setText(String.valueOf(tot_price));
+//                                                    editor.putInt("tot_price", tot_price);
+//                                                    editor.commit();
+//
+//                                                }
+//                                            }
+//                                        }
+//                                        @Override
+//                                        public void onCancelled(DatabaseError databaseError) {
+//
+//                                        }
+//                                    });
+                            }
+                        });
+
+                    }
+                    else if(count==3) {
+                        TextView topTV3 = new TextView(Cart.this);
+                        topTV3.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+                        topTV3.setText("" + snapshot.getValue());
+                        topTV3.setTextColor(Color.BLACK);
+                        topTV3.setTextSize(30);
+                        topTV3.setPadding(20, 10, 10, 10);
+                        container.addView(topTV3);
+
+                    }
+                    else if(count==4) {
+                        TextView topTV4 = new TextView(Cart.this);
+                        topTV4.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+                        topTV4.setText("" + snapshot.getValue());
+                        topTV4.setTextColor(Color.BLACK);
+                        topTV4.setTextSize(30);
+                        topTV4.setPadding(20, 10, 10, 10);
+                        container.addView(topTV4);
+
+                    }
+                    else if(count==5) {
+                        TextView topTV5 = new TextView(Cart.this);
+                        topTV5.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+                        topTV5.setText("" + snapshot.getValue());
+                        topTV5.setTextColor(Color.BLACK);
+                        topTV5.setTextSize(30);
+                        topTV5.setPadding(20, 10, 10, 10);
+                        container.addView(topTV5);
+
+                    }
+                    else if(count==6) {
+                        TextView topTV6 = new TextView(Cart.this);
+                        topTV6.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+                        topTV6.setText("" + snapshot.getValue());
+                        topTV6.setTextColor(Color.BLACK);
+                        topTV6.setTextSize(30);
+                        topTV6.setPadding(20, 10, 10, 10);
+                        container.addView(topTV6);
+
+                    }
+                    else if(count==7) {
+                        TextView topTV7 = new TextView(Cart.this);
+                        topTV7.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+                        topTV7.setText("" + snapshot.getValue());
+                        topTV7.setTextColor(Color.BLACK);
+                        topTV7.setTextSize(30);
+                        topTV7.setPadding(20, 10, 10, 10);
+                        container.addView(topTV7);
+
+                    }
+                    else if(count==8) {
+                        TextView topTV8 = new TextView(Cart.this);
+                        topTV8.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+                        topTV8.setText("" + snapshot.getValue());
+                        topTV8.setTextColor(Color.BLACK);
+                        topTV8.setTextSize(30);
+                        topTV8.setPadding(20, 10, 10, 10);
+                        container.addView(topTV8);
+
+                    }
+                    else if(count==9) {
+                        TextView topTV9 = new TextView(Cart.this);
+                        topTV9.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+                        topTV9.setText("" + snapshot.getValue());
+                        topTV9.setTextColor(Color.BLACK);
+                        topTV9.setTextSize(30);
+                        topTV9.setPadding(20, 10, 10, 10);
+                        container.addView(topTV9);
+
+                    }
+                    else if(count==10) {
+                        TextView topTV10 = new TextView(Cart.this);
+                        topTV10.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+                        topTV10.setText("" + snapshot.getValue());
+                        topTV10.setTextColor(Color.BLACK);
+                        topTV10.setTextSize(30);
+                        topTV10.setPadding(20, 10, 10, 10);
+                        container.addView(topTV10);
+
+                    }
+
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+        Value_Reference.addValueEventListener(new ValueEventListener() {
+            SharedPreferences.Editor editor = pref.edit();
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+
+                    if(count==1) {
+
+                        tot_price = Integer.parseInt("" + snapshot.getValue());
+                        textView5.setText(String.valueOf(tot_price));
+                        editor.putInt("tot_price", tot_price);
+                        editor.commit();
+
+                    }
+                    else if(count==2) {
+                        tot_price += Integer.parseInt("" + snapshot.getValue());
+                        textView5.setText(String.valueOf(tot_price));
+                        editor.putInt("tot_price", tot_price);
+                        editor.commit();
+
+                    }
+                    else if(count==3) {
+                        tot_price += Integer.parseInt("" + snapshot.getValue());
+                        textView5.setText(String.valueOf(tot_price));
+                        editor.putInt("tot_price", tot_price);
+                        editor.commit();
+
+                    }
+                    else if(count==4) {
+                        tot_price += Integer.parseInt("" + snapshot.getValue());
+                        textView5.setText(String.valueOf(tot_price));
+                        editor.putInt("tot_price", tot_price);
+                        editor.commit();
+
+                    }
+                    else if(count==5) {
+                        tot_price += Integer.parseInt("" + snapshot.getValue());
+                        textView5.setText(String.valueOf(tot_price));
+                        editor.putInt("tot_price", tot_price);
+                        editor.commit();
+
+                    }
+                    else if(count==6) {
+                        tot_price += Integer.parseInt("" + snapshot.getValue());
+                        textView5.setText(String.valueOf(tot_price));
+                        editor.putInt("tot_price", tot_price);
+                        editor.commit();
+
+                    }
+                    else if(count==7) {
+                        tot_price += Integer.parseInt("" + snapshot.getValue());
+                        textView5.setText(String.valueOf(tot_price));
+                        editor.putInt("tot_price", tot_price);
+                        editor.commit();
+
+                    }
+                    else if(count==8) {
+                        tot_price += Integer.parseInt("" + snapshot.getValue());
+                        textView5.setText(String.valueOf(tot_price));
+                        editor.putInt("tot_price", tot_price);
+                        editor.commit();
+
+                    }
+                    else if(count==9) {
+                        tot_price += Integer.parseInt("" + snapshot.getValue());
+                        textView5.setText(String.valueOf(tot_price));
+                        editor.putInt("tot_price", tot_price);
+                        editor.commit();
+
+                    }
+                    else if(count==10) {
+                        tot_price += Integer.parseInt("" + snapshot.getValue());
+                        textView5.setText(String.valueOf(tot_price));
+                        editor.putInt("tot_price", tot_price);
+                        editor.commit();
+
+                    }
+
+
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         try {
             app_url= getURL(KaKaoGo());
         } catch (JSONException e) {
@@ -168,8 +410,57 @@ int count=0;
     }
 
     public void ClickMe(View view){
-
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(app_url));
         startActivity(intent);
+
+
+
+        Menu_Reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    if(count==1) {
+                        databaseReference.push().setValue("" + snapshot.getValue());
+                    }
+                    else if(count==2) {
+                        databaseReference.push().setValue("" + snapshot.getValue());
+                    }
+                    else if(count==3) {
+                        databaseReference.push().setValue("" + snapshot.getValue());
+                    }
+                    else if(count==4) {
+                        databaseReference.push().setValue("" + snapshot.getValue());
+                    }
+                    else if(count==5) {
+                        databaseReference.push().setValue("" + snapshot.getValue());
+                    }
+                    else if(count==6) {
+                        databaseReference.push().setValue("" + snapshot.getValue());
+                    }
+                    else if(count==7) {
+                        databaseReference.push().setValue("" + snapshot.getValue());
+                    }
+                    else if(count==8) {
+                        databaseReference.push().setValue("" + snapshot.getValue());
+                    }
+                    else if(count==9) {
+                        databaseReference.push().setValue("" + snapshot.getValue());
+                    }
+                    else if(count==10) {
+                        databaseReference.push().setValue("" + snapshot.getValue());
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+        databaseReference.child("total_money").push().setValue(tot_price);
+        SharedPreferences.Editor editor = pref.edit();
+        Menu_Reference.removeValue();
+        Value_Reference.removeValue();
+        editor.putInt("reset", 1);
+        editor.commit();
     }
 }

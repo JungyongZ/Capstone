@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
     <LinearLayout
         android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_height="match_parent"
-        >
+        android:layout_weight="2"
+        android:layout_height="match_parent">
 
 
         <TextView
@@ -19,69 +20,73 @@
             android:textColor="#ff000000"
             android:text="주문하신 내역"/>
 
+    </LinearLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="#ff000000"
-            android:id="@+id/resname2"
-            android:textSize="45dp"
-
-            android:text=""/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="#ff000000"
-            android:id="@+id/resname3"
-            android:textSize="45dp"
-
-            android:text=""/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/resname4"
-            android:textColor="#ff000000"
-            android:textSize="45dp"
-
-            android:text=""/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/resname5"
-            android:textColor="#ff000000"
-            android:textSize="45dp"
-
-            android:text=""/>
-
-
-</LinearLayout>
-
-    <TextView
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="45dp"
-        android:textColor="#ff000000"
-        android:layout_above="@id/resname_sum"
-        android:text="합계 가격 "/>
-
-    <TextView
-        android:id="@+id/resname_sum"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="123"
-        android:textColor="#ff000000"
-        android:layout_above="@id/btn_shopping_cart"
-        android:textSize="45dp" />
-    <Button
-        android:id="@+id/btn_shopping_cart"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="#3333CC"
-        android:gravity="center"
-        android:onClick="ClickMe"
-        android:text="주문하기"
-        android:layout_alignParentBottom="true"
-        android:textColor="#ff000000"
-        android:textSize="30dp" />
-</RelativeLayout>
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/dynamicArea"
+                android:orientation="vertical"
+                >
+            </LinearLayout>
+        </ScrollView>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_weight="1.6"
+        android:orientation="vertical"
+        android:layout_height="match_parent"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="45dp"
+            android:textColor="#ff000000"
+
+            android:layout_above="@id/resname_sum"
+
+            android:text="합계 가격 :"/>
+        <TextView
+            android:id="@+id/resname_sum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="123"
+
+            android:textColor="#ff000000"
+            android:layout_above="@id/btn_shopping_cart"
+            android:textSize="45dp" />
+        <Button
+            android:id="@+id/btn_shopping_cart"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="#3333CC"
+            android:gravity="center"
+            android:onClick="ClickMe"
+            android:text="주문하기"
+
+            android:textColor="#ff000000"
+            android:textSize="30dp" />
+
+    </LinearLayout>
+</LinearLayout>
