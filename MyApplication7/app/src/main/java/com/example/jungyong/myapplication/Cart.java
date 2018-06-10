@@ -30,13 +30,11 @@ import com.google.firebase.database.ValueEventListener;
 
 
 import android.view.ViewGroup.LayoutParams;
-import android.app.Activity;
 import android.view.Gravity;
 import android.graphics.Color;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import java.util.HashMap;
 
 
 public class Cart extends AppCompatActivity {
@@ -78,7 +76,7 @@ public class Cart extends AppCompatActivity {
                         topTV1.setTextSize(30);
                         topTV1.setPadding(20, 10, 10, 10);
                         container.addView(topTV1);
-                        tot_price = Integer.parseInt("" + snapshot.child("content").getValue());
+                        tot_price += Integer.parseInt("" + snapshot.child("content").getValue());
                         textView5.setText(String.valueOf(tot_price));
                         editor.putInt("tot_price", tot_price);
                         editor.commit();
@@ -90,13 +88,18 @@ public class Cart extends AppCompatActivity {
                                 toast.setGravity(Gravity.CENTER, 0, 0);
                                 toast.show();
 
-                                Menu_Reference.child("Menu").child("title").removeValue();
                                 tot_price= tot_price - Integer.parseInt(""+snapshot.child("content").getValue());
-                                Menu_Reference.child("Menu").child("content").removeValue();
                                 container.removeView(topTV1);
                                 textView5.setText(String.valueOf(tot_price));
-                                count = count -1;
-//
+                                Menu_Reference.child(snapshot.getKey()).removeValue();
+                                int set = pref.getInt("set",0);
+                                if(set==1){
+                                    editor.putInt("set2",2);
+                                    editor.commit();
+                                }
+                                count = 0;
+                                        editor.putString("menu_name1", ""+snapshot.child("title").getValue());
+                                        editor.commit();
                             }
                         });
                     }
@@ -104,12 +107,15 @@ public class Cart extends AppCompatActivity {
                     else if(count==2) {
                         final TextView topTV2 = new TextView(Cart.this);
                         topTV2.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-                        topTV2.setText("" + snapshot.getValue());
+                        topTV2.setText("" + snapshot.child("title").getValue());
                         topTV2.setTextColor(Color.BLACK);
                         topTV2.setTextSize(30);
                         topTV2.setPadding(20, 10, 10, 10);
                         container.addView(topTV2);
-
+                        tot_price += Integer.parseInt("" + snapshot.child("content").getValue());
+                        textView5.setText(String.valueOf(tot_price));
+                        editor.putInt("tot_price", tot_price);
+                        editor.commit();
                         topTV2.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -118,113 +124,299 @@ public class Cart extends AppCompatActivity {
                                 toast.setGravity(Gravity.CENTER, 0, 0);
                                 toast.show();
 
-                                Menu_Reference.child(snapshot.getKey()).removeValue();
+                                tot_price= tot_price - Integer.parseInt(""+snapshot.child("content").getValue());
                                 container.removeView(topTV2);
-//                                    Value_Reference.addValueEventListener(new ValueEventListener() {
-//                                        SharedPreferences.Editor editor = pref.edit();
-//                                        @Override
-//                                        public void onDataChange(DataSnapshot dataSnapshot) {
-//                                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-//                                                if(count==2) {
-//                                                   count = count -1;
-//                                                }
-//                                                else if(count==1) {
-//                                                    Value_Reference.child(snapshot.getKey()).removeValue();
-//                                                    tot_price = tot_price - Integer.parseInt("" + snapshot.getValue());
-//                                                    textView5.setText(String.valueOf(tot_price));
-//                                                    editor.putInt("tot_price", tot_price);
-//                                                    editor.commit();
-//
-//                                                }
-//                                            }
-//                                        }
-//                                        @Override
-//                                        public void onCancelled(DatabaseError databaseError) {
-//
-//                                        }
-//                                    });
+                                textView5.setText(String.valueOf(tot_price));
+                                Menu_Reference.child(snapshot.getKey()).removeValue();
+                                int set = pref.getInt("set",0);
+                                if(set==1){
+                                    editor.putInt("set2",2);
+                                    editor.commit();
+                                }
+                                count = 0;
+
                             }
                         });
 
                     }
                     else if(count==3) {
-                        TextView topTV3 = new TextView(Cart.this);
+                        final TextView topTV3 = new TextView(Cart.this);
                         topTV3.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-                        topTV3.setText("" + snapshot.getValue());
+                        topTV3.setText("" + snapshot.child("title").getValue());
                         topTV3.setTextColor(Color.BLACK);
                         topTV3.setTextSize(30);
                         topTV3.setPadding(20, 10, 10, 10);
                         container.addView(topTV3);
+                        tot_price += Integer.parseInt("" + snapshot.child("content").getValue());
+                        textView5.setText(String.valueOf(tot_price));
+                        editor.putInt("tot_price", tot_price);
+                        editor.commit();
+                        topTV3.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                Toast toast = Toast.makeText(getApplicationContext(), "삭제되었습니다.", Toast.LENGTH_SHORT);
+                                toast.setGravity(Gravity.CENTER, 0, 0);
+                                toast.show();
+
+                                tot_price= tot_price - Integer.parseInt(""+snapshot.child("content").getValue());
+                                container.removeView(topTV3);
+                                textView5.setText(String.valueOf(tot_price));
+                                Menu_Reference.child(snapshot.getKey()).removeValue();
+                                int set = pref.getInt("set",0);
+                                if(set==1){
+                                    editor.putInt("set2",2);
+                                    editor.commit();
+                                }
+                                count = 0;
+
+                            }
+                        });
 
                     }
                     else if(count==4) {
-                        TextView topTV4 = new TextView(Cart.this);
+                        final TextView topTV4 = new TextView(Cart.this);
                         topTV4.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-                        topTV4.setText("" + snapshot.getValue());
+                        topTV4.setText("" + snapshot.child("title").getValue());
                         topTV4.setTextColor(Color.BLACK);
                         topTV4.setTextSize(30);
                         topTV4.setPadding(20, 10, 10, 10);
                         container.addView(topTV4);
+                        tot_price += Integer.parseInt("" + snapshot.child("content").getValue());
+                        textView5.setText(String.valueOf(tot_price));
+                        editor.putInt("tot_price", tot_price);
+                        editor.commit();
+                        topTV4.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                Toast toast = Toast.makeText(getApplicationContext(), "삭제되었습니다.", Toast.LENGTH_SHORT);
+                                toast.setGravity(Gravity.CENTER, 0, 0);
+                                toast.show();
+
+                                tot_price= tot_price - Integer.parseInt(""+snapshot.child("content").getValue());
+                                container.removeView(topTV4);
+                                textView5.setText(String.valueOf(tot_price));
+                                Menu_Reference.child(snapshot.getKey()).removeValue();
+                                int set = pref.getInt("set",0);
+                                if(set==1){
+                                    editor.putInt("set2",2);
+                                    editor.commit();
+                                }
+                                count = 0;
+
+                            }
+                        });
 
                     }
                     else if(count==5) {
-                        TextView topTV5 = new TextView(Cart.this);
+                        final TextView topTV5 = new TextView(Cart.this);
                         topTV5.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-                        topTV5.setText("" + snapshot.getValue());
+                        topTV5.setText("" + snapshot.child("title").getValue());
                         topTV5.setTextColor(Color.BLACK);
                         topTV5.setTextSize(30);
                         topTV5.setPadding(20, 10, 10, 10);
                         container.addView(topTV5);
+                        tot_price += Integer.parseInt("" + snapshot.child("content").getValue());
+                        textView5.setText(String.valueOf(tot_price));
+                        editor.putInt("tot_price", tot_price);
+                        editor.commit();
+                        topTV5.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                Toast toast = Toast.makeText(getApplicationContext(), "삭제되었습니다.", Toast.LENGTH_SHORT);
+                                toast.setGravity(Gravity.CENTER, 0, 0);
+                                toast.show();
+
+                                tot_price= tot_price - Integer.parseInt(""+snapshot.child("content").getValue());
+                                container.removeView(topTV5);
+                                textView5.setText(String.valueOf(tot_price));
+                                Menu_Reference.child(snapshot.getKey()).removeValue();
+                                int set = pref.getInt("set",0);
+                                if(set==1){
+                                    editor.putInt("set2",2);
+                                    editor.commit();
+                                }
+                                count = 0;
+
+                            }
+                        });
 
                     }
                     else if(count==6) {
-                        TextView topTV6 = new TextView(Cart.this);
+                        final TextView topTV6 = new TextView(Cart.this);
                         topTV6.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-                        topTV6.setText("" + snapshot.getValue());
+                        topTV6.setText("" + snapshot.child("title").getValue());
                         topTV6.setTextColor(Color.BLACK);
                         topTV6.setTextSize(30);
                         topTV6.setPadding(20, 10, 10, 10);
                         container.addView(topTV6);
+                        tot_price += Integer.parseInt("" + snapshot.child("content").getValue());
+                        textView5.setText(String.valueOf(tot_price));
+                        editor.putInt("tot_price", tot_price);
+                        editor.commit();
+                        topTV6.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                Toast toast = Toast.makeText(getApplicationContext(), "삭제되었습니다.", Toast.LENGTH_SHORT);
+                                toast.setGravity(Gravity.CENTER, 0, 0);
+                                toast.show();
+
+                                tot_price= tot_price - Integer.parseInt(""+snapshot.child("content").getValue());
+                                container.removeView(topTV6);
+                                textView5.setText(String.valueOf(tot_price));
+                                Menu_Reference.child(snapshot.getKey()).removeValue();
+                                int set = pref.getInt("set",0);
+                                if(set==1){
+                                    editor.putInt("set2",2);
+                                    editor.commit();
+                                }
+                                count = 0;
+
+                            }
+                        });
 
                     }
                     else if(count==7) {
-                        TextView topTV7 = new TextView(Cart.this);
+                        final TextView topTV7 = new TextView(Cart.this);
                         topTV7.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-                        topTV7.setText("" + snapshot.getValue());
+                        topTV7.setText("" + snapshot.child("title").getValue());
                         topTV7.setTextColor(Color.BLACK);
                         topTV7.setTextSize(30);
                         topTV7.setPadding(20, 10, 10, 10);
                         container.addView(topTV7);
+                        tot_price += Integer.parseInt("" + snapshot.child("content").getValue());
+                        textView5.setText(String.valueOf(tot_price));
+                        editor.putInt("tot_price", tot_price);
+                        editor.commit();
+                        topTV7.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                Toast toast = Toast.makeText(getApplicationContext(), "삭제되었습니다.", Toast.LENGTH_SHORT);
+                                toast.setGravity(Gravity.CENTER, 0, 0);
+                                toast.show();
+
+                                tot_price= tot_price - Integer.parseInt(""+snapshot.child("content").getValue());
+                                container.removeView(topTV7);
+                                textView5.setText(String.valueOf(tot_price));
+                                Menu_Reference.child(snapshot.getKey()).removeValue();
+                                int set = pref.getInt("set",0);
+                                if(set==1){
+                                    editor.putInt("set2",2);
+                                    editor.commit();
+                                }
+                                count = 0;
+
+                            }
+                        });
 
                     }
                     else if(count==8) {
-                        TextView topTV8 = new TextView(Cart.this);
+                        final TextView topTV8 = new TextView(Cart.this);
                         topTV8.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-                        topTV8.setText("" + snapshot.getValue());
+                        topTV8.setText("" + snapshot.child("title").getValue());
                         topTV8.setTextColor(Color.BLACK);
                         topTV8.setTextSize(30);
                         topTV8.setPadding(20, 10, 10, 10);
                         container.addView(topTV8);
+                        tot_price += Integer.parseInt("" + snapshot.child("content").getValue());
+                        textView5.setText(String.valueOf(tot_price));
+                        editor.putInt("tot_price", tot_price);
+                        editor.commit();
+                        topTV8.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                Toast toast = Toast.makeText(getApplicationContext(), "삭제되었습니다.", Toast.LENGTH_SHORT);
+                                toast.setGravity(Gravity.CENTER, 0, 0);
+                                toast.show();
+
+                                tot_price= tot_price - Integer.parseInt(""+snapshot.child("content").getValue());
+                                container.removeView(topTV8);
+                                textView5.setText(String.valueOf(tot_price));
+                                Menu_Reference.child(snapshot.getKey()).removeValue();
+                                int set = pref.getInt("set",0);
+                                if(set==1){
+                                    editor.putInt("set2",2);
+                                    editor.commit();
+                                }
+                                count = 0;
+
+                            }
+                        });
 
                     }
                     else if(count==9) {
-                        TextView topTV9 = new TextView(Cart.this);
+                        final TextView topTV9 = new TextView(Cart.this);
                         topTV9.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-                        topTV9.setText("" + snapshot.getValue());
+                        topTV9.setText("" + snapshot.child("title").getValue());
                         topTV9.setTextColor(Color.BLACK);
                         topTV9.setTextSize(30);
                         topTV9.setPadding(20, 10, 10, 10);
                         container.addView(topTV9);
+                        tot_price += Integer.parseInt("" + snapshot.child("content").getValue());
+                        textView5.setText(String.valueOf(tot_price));
+                        editor.putInt("tot_price", tot_price);
+                        editor.commit();
+                        topTV9.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                Toast toast = Toast.makeText(getApplicationContext(), "삭제되었습니다.", Toast.LENGTH_SHORT);
+                                toast.setGravity(Gravity.CENTER, 0, 0);
+                                toast.show();
+
+                                tot_price= tot_price - Integer.parseInt(""+snapshot.child("content").getValue());
+                                container.removeView(topTV9);
+                                textView5.setText(String.valueOf(tot_price));
+                                Menu_Reference.child(snapshot.getKey()).removeValue();
+                                int set = pref.getInt("set",0);
+                                if(set==1){
+                                    editor.putInt("set2",2);
+                                    editor.commit();
+                                }
+                                count = 0;
+
+                            }
+                        });
 
                     }
                     else if(count==10) {
-                        TextView topTV10 = new TextView(Cart.this);
+                        final TextView topTV10 = new TextView(Cart.this);
                         topTV10.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-                        topTV10.setText("" + snapshot.getValue());
+                        topTV10.setText("" + snapshot.child("title").getValue());
                         topTV10.setTextColor(Color.BLACK);
                         topTV10.setTextSize(30);
                         topTV10.setPadding(20, 10, 10, 10);
                         container.addView(topTV10);
+                        tot_price += Integer.parseInt("" + snapshot.child("content").getValue());
+                        textView5.setText(String.valueOf(tot_price));
+                        editor.putInt("tot_price", tot_price);
+                        editor.commit();
+                        topTV10.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                Toast toast = Toast.makeText(getApplicationContext(), "삭제되었습니다.", Toast.LENGTH_SHORT);
+                                toast.setGravity(Gravity.CENTER, 0, 0);
+                                toast.show();
+
+                                tot_price= tot_price - Integer.parseInt(""+snapshot.child("content").getValue());
+                                container.removeView(topTV10);
+                                textView5.setText(String.valueOf(tot_price));
+                                Menu_Reference.child(snapshot.getKey()).removeValue();
+                                int set = pref.getInt("set",0);
+                                if(set==1){
+                                    editor.putInt("set2",2);
+                                    editor.commit();
+                                }
+                                count = 0;
+
+                            }
+                        });
 
                     }
 
@@ -239,98 +431,7 @@ public class Cart extends AppCompatActivity {
         });
 
 
-        Value_Reference.addValueEventListener(new ValueEventListener() {
-            SharedPreferences.Editor editor = pref.edit();
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
-                    if(count==1) {
-
-                        tot_price = Integer.parseInt("" + snapshot.getValue());
-                        textView5.setText(String.valueOf(tot_price));
-                        editor.putInt("tot_price", tot_price);
-                        editor.commit();
-
-                    }
-                    else if(count==2) {
-                        tot_price += Integer.parseInt("" + snapshot.getValue());
-                        textView5.setText(String.valueOf(tot_price));
-                        editor.putInt("tot_price", tot_price);
-                        editor.commit();
-
-                    }
-                    else if(count==3) {
-                        tot_price += Integer.parseInt("" + snapshot.getValue());
-                        textView5.setText(String.valueOf(tot_price));
-                        editor.putInt("tot_price", tot_price);
-                        editor.commit();
-
-                    }
-                    else if(count==4) {
-                        tot_price += Integer.parseInt("" + snapshot.getValue());
-                        textView5.setText(String.valueOf(tot_price));
-                        editor.putInt("tot_price", tot_price);
-                        editor.commit();
-
-                    }
-                    else if(count==5) {
-                        tot_price += Integer.parseInt("" + snapshot.getValue());
-                        textView5.setText(String.valueOf(tot_price));
-                        editor.putInt("tot_price", tot_price);
-                        editor.commit();
-
-                    }
-                    else if(count==6) {
-                        tot_price += Integer.parseInt("" + snapshot.getValue());
-                        textView5.setText(String.valueOf(tot_price));
-                        editor.putInt("tot_price", tot_price);
-                        editor.commit();
-
-                    }
-                    else if(count==7) {
-                        tot_price += Integer.parseInt("" + snapshot.getValue());
-                        textView5.setText(String.valueOf(tot_price));
-                        editor.putInt("tot_price", tot_price);
-                        editor.commit();
-
-                    }
-                    else if(count==8) {
-                        tot_price += Integer.parseInt("" + snapshot.getValue());
-                        textView5.setText(String.valueOf(tot_price));
-                        editor.putInt("tot_price", tot_price);
-                        editor.commit();
-
-                    }
-                    else if(count==9) {
-                        tot_price += Integer.parseInt("" + snapshot.getValue());
-                        textView5.setText(String.valueOf(tot_price));
-                        editor.putInt("tot_price", tot_price);
-                        editor.commit();
-
-                    }
-                    else if(count==10) {
-                        tot_price += Integer.parseInt("" + snapshot.getValue());
-                        textView5.setText(String.valueOf(tot_price));
-                        editor.putInt("tot_price", tot_price);
-                        editor.commit();
-
-                    }
-
-
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        try {
-            app_url= getURL(KaKaoGo());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
 
 
     }
@@ -351,18 +452,18 @@ public class Cart extends AppCompatActivity {
 
             OutputStream os = conn.getOutputStream();
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8")); //캐릭터셋 설정
-
+String m_name=pref.getString("menu_name1","");
             Log.d("Testing1", pref.getString("menu_name1","")+","+pref.getInt("tot_price", 0));
             writer.write(
                     "cid=TC0ONETIME&" +
                             "partner_order_id=partner_order_id&" +
                             "partner_user_id=partner_user_id&" +
                             "item_name=" +
-                            pref.getString("menu_name1","") +
+                             m_name+
                             "&" +
                             "quantity=1&" +
                             "total_amount=" +
-                            String.valueOf(pref.getInt("tot_price",0))+
+                            String.valueOf(tot_price)+
                             "&" +
                             "vat_amount=0&" +
                             "tax_free_amount=0&" +
@@ -410,6 +511,11 @@ public class Cart extends AppCompatActivity {
     }
 
     public void ClickMe(View view){
+        try {
+            app_url= getURL(KaKaoGo());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(app_url));
         startActivity(intent);
 

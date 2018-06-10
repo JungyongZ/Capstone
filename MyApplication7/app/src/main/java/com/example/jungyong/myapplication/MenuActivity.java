@@ -138,8 +138,15 @@ Log.v("id,name",id + name);
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    int set2 = pref.getInt("set2",0);
 
                     int reset = pref.getInt("reset",0);
+                    if(set2==2){
+                        count=10;
+                        editor.putInt("set2",1);
+                        editor.commit();
+                    }
+
                     if(reset==1){
                         count=1;
                         editor.putInt("reset", 0);
