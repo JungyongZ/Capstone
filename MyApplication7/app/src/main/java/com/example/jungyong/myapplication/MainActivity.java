@@ -1,5 +1,6 @@
 package com.example.jungyong.myapplication;
 
+import android.Manifest;
 import android.app.FragmentManager;
 
 import android.content.Intent;
@@ -8,9 +9,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.StrictMode;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -23,8 +27,10 @@ import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 
@@ -121,6 +127,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onMapReady(GoogleMap map) {
 mMap = map;
+
+
     }
 
 

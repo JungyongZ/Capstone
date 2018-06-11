@@ -1,10 +1,17 @@
 package com.example.jungyong.myapplication;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 
 public class StartActivity extends AppCompatActivity {
@@ -30,6 +37,12 @@ public class StartActivity extends AppCompatActivity {
         bt5.setOnClickListener(onclickListener);
         ImageButton bt6 = (ImageButton) findViewById(R.id.b6);
         bt6.setOnClickListener(onclickListener);
+        int permissionCheck = ContextCompat.checkSelfPermission(StartActivity.this, Manifest.permission.ACCESS_FINE_LOCATION);
+        if (permissionCheck == PackageManager.PERMISSION_DENIED) {
+            ActivityCompat.requestPermissions(StartActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
+        } else {
+            Log.v("ok","ok2");
+        }
     }
     class BtnOnclickListener implements ImageButton.OnClickListener {
         @Override
@@ -73,6 +86,17 @@ public class StartActivity extends AppCompatActivity {
                     startActivity(intent);
                     break;
 
+            }
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        //super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 0) {
+            if (grantResults[0] == 0) {
+                Toast.makeText(this, "위치승인", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "거절됨", Toast.LENGTH_SHORT).show();
             }
         }
     }

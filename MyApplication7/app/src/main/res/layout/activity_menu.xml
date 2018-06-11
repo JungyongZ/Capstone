@@ -47,27 +47,27 @@
             android:gravity="center"
             android:text="031-219-1123"/>
     </LinearLayout>
-<LinearLayout
-    android:layout_weight="1.5"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_weight="1.5"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <android.support.v7.widget.RecyclerView
-        android:layout_width="wrap_content"
-        android:id="@+id/vertical_list"
-        android:layout_height="match_parent" />
-</LinearLayout>
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="wrap_content"
+            android:id="@+id/vertical_list"
+            android:layout_height="match_parent" />
+    </LinearLayout>
 
- <LinearLayout
-     android:layout_weight="1"
-     android:layout_width="match_parent"
-     android:layout_height="match_parent">
-     <ListView
-         android:id = "@+id/ListView02"
-         android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ListView
+            android:id = "@+id/ListView02"
+            android:layout_width="match_parent"
 
-         android:layout_height="match_parent" />
- </LinearLayout>
+            android:layout_height="match_parent" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -75,61 +75,59 @@
         android:layout_weight="1.6"
         android:orientation="horizontal"
         >
-        <RadioGroup
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_height="match_parent">
-            <RadioButton
-                android:layout_width="match_parent"
-                android:layout_weight="1"
-                android:text="5분"
-                android:layout_height="match_parent" />
-            <RadioButton
-                android:layout_weight="1"
-                android:layout_width="match_parent"
-                android:text="10분"
-                android:layout_height="match_parent" />
-            <RadioButton
-                android:layout_weight="1"
-                android:text="15분"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-            <RadioButton
-                android:layout_weight="1"
-                android:text="20분"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-            <RadioButton
-                android:layout_weight="1"
-                android:text="25분"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-            <RadioButton
-                android:layout_weight="1"
-                android:text="직접입력"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </RadioGroup>
+        <Button
+            android:id="@+id/btnchangedate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="mOnClick"
+            android:text="날짜 대화상자"
+            />
+
+        <TextView
+            android:id="@+id/txtdate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="date"
+            />
+        <Button
+
+            android:id="@+id/btnchangetime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="mOnClick"
+            android:text="예약시간 선택"
+            />
+
+        <TextView
+            android:id="@+id/txttime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="27sp"
+            android:gravity="center"
+            android:text="time"
+            />
+
 
     </LinearLayout>
 
-<LinearLayout
-    android:layout_weight="1.6"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <TextView
+    <LinearLayout
+        android:layout_weight="1.6"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textSize="30dp"
-        android:textColor="#ff000000"
-        android:background="#3333CC"
-        android:onClick="ClickMe"
-        android:gravity="center"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="30dp"
+            android:textColor="#ff000000"
+            android:background="#3333CC"
+            android:onClick="ClickMe"
+            android:gravity="center"
 
-        android:text="장바구니"
-        />
+            android:text="장바구니"
+            />
 
-</LinearLayout>
+    </LinearLayout>
 
 
 </LinearLayout>

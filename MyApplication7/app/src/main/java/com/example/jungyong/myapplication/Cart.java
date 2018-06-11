@@ -36,8 +36,20 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 
+import java.io.*;
+import java.net.*;
+import java.util.*;
+import android.app.*;
+import android.os.*;
+import android.util.*;
+import android.view.*;
+import android.widget.*;
+
+
+
 
 public class Cart extends AppCompatActivity {
+    int mHour,mMinute;
     int count=0;
     TextView textView5;
     int tot_price=0;
@@ -47,13 +59,16 @@ public class Cart extends AppCompatActivity {
     private DatabaseReference Menu_Reference = firebaseDatabase.getReference("Menu");
     private DatabaseReference Value_Reference = firebaseDatabase.getReference("Value");;
     private DatabaseReference databaseReference = firebaseDatabase.getReference("Restaurant");
-
+    String sId,sPw, getID,getDate;
+    String tot_menu1,tot_menu2,tot_menu3,tot_menu4,tot_menu5,tot_menu6,tot_menu7,tot_menu8,tot_menu9,tot_menu10;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
+
+
 
         textView5 = (TextView)findViewById(R.id.resname_sum);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -77,6 +92,8 @@ public class Cart extends AppCompatActivity {
                         topTV1.setPadding(20, 10, 10, 10);
                         container.addView(topTV1);
                         tot_price += Integer.parseInt("" + snapshot.child("content").getValue());
+                        tot_menu1 =""+ snapshot.child("title").getValue();
+                        editor.putString("tot_menu1", tot_menu1);
                         textView5.setText(String.valueOf(tot_price));
                         editor.putInt("tot_price", tot_price);
                         editor.commit();
@@ -87,7 +104,8 @@ public class Cart extends AppCompatActivity {
                                 Toast toast = Toast.makeText(getApplicationContext(), "삭제되었습니다.", Toast.LENGTH_SHORT);
                                 toast.setGravity(Gravity.CENTER, 0, 0);
                                 toast.show();
-
+                                editor.putString("tot_menu1", null);
+                                editor.commit();
                                 tot_price= tot_price - Integer.parseInt(""+snapshot.child("content").getValue());
                                 container.removeView(topTV1);
                                 textView5.setText(String.valueOf(tot_price));
@@ -98,8 +116,9 @@ public class Cart extends AppCompatActivity {
                                     editor.commit();
                                 }
                                 count = 0;
-                                        editor.putString("menu_name1", ""+snapshot.child("title").getValue());
-                                        editor.commit();
+                                editor.putString("menu_name1", ""+snapshot.child("title").getValue());
+                                editor.commit();
+//
                             }
                         });
                     }
@@ -114,6 +133,8 @@ public class Cart extends AppCompatActivity {
                         container.addView(topTV2);
                         tot_price += Integer.parseInt("" + snapshot.child("content").getValue());
                         textView5.setText(String.valueOf(tot_price));
+                        tot_menu2 =""+ snapshot.child("title").getValue();
+                        editor.putString("tot_menu2", tot_menu2);
                         editor.putInt("tot_price", tot_price);
                         editor.commit();
                         topTV2.setOnClickListener(new View.OnClickListener() {
@@ -123,7 +144,8 @@ public class Cart extends AppCompatActivity {
                                 Toast toast = Toast.makeText(getApplicationContext(), "삭제되었습니다.", Toast.LENGTH_SHORT);
                                 toast.setGravity(Gravity.CENTER, 0, 0);
                                 toast.show();
-
+                                editor.putString("tot_menu2", null);
+                                editor.commit();
                                 tot_price= tot_price - Integer.parseInt(""+snapshot.child("content").getValue());
                                 container.removeView(topTV2);
                                 textView5.setText(String.valueOf(tot_price));
@@ -149,6 +171,8 @@ public class Cart extends AppCompatActivity {
                         container.addView(topTV3);
                         tot_price += Integer.parseInt("" + snapshot.child("content").getValue());
                         textView5.setText(String.valueOf(tot_price));
+                        tot_menu3 =""+ snapshot.child("title").getValue();
+                        editor.putString("tot_menu3", tot_menu3);
                         editor.putInt("tot_price", tot_price);
                         editor.commit();
                         topTV3.setOnClickListener(new View.OnClickListener() {
@@ -158,7 +182,8 @@ public class Cart extends AppCompatActivity {
                                 Toast toast = Toast.makeText(getApplicationContext(), "삭제되었습니다.", Toast.LENGTH_SHORT);
                                 toast.setGravity(Gravity.CENTER, 0, 0);
                                 toast.show();
-
+                                editor.putString("tot_menu3", null);
+                                editor.commit();
                                 tot_price= tot_price - Integer.parseInt(""+snapshot.child("content").getValue());
                                 container.removeView(topTV3);
                                 textView5.setText(String.valueOf(tot_price));
@@ -184,6 +209,8 @@ public class Cart extends AppCompatActivity {
                         container.addView(topTV4);
                         tot_price += Integer.parseInt("" + snapshot.child("content").getValue());
                         textView5.setText(String.valueOf(tot_price));
+                        tot_menu4 =""+ snapshot.child("title").getValue();
+                        editor.putString("tot_menu4", tot_menu4);
                         editor.putInt("tot_price", tot_price);
                         editor.commit();
                         topTV4.setOnClickListener(new View.OnClickListener() {
@@ -193,7 +220,8 @@ public class Cart extends AppCompatActivity {
                                 Toast toast = Toast.makeText(getApplicationContext(), "삭제되었습니다.", Toast.LENGTH_SHORT);
                                 toast.setGravity(Gravity.CENTER, 0, 0);
                                 toast.show();
-
+                                editor.putString("tot_menu4", null);
+                                editor.commit();
                                 tot_price= tot_price - Integer.parseInt(""+snapshot.child("content").getValue());
                                 container.removeView(topTV4);
                                 textView5.setText(String.valueOf(tot_price));
@@ -219,6 +247,8 @@ public class Cart extends AppCompatActivity {
                         container.addView(topTV5);
                         tot_price += Integer.parseInt("" + snapshot.child("content").getValue());
                         textView5.setText(String.valueOf(tot_price));
+                        tot_menu5 =""+ snapshot.child("title").getValue();
+                        editor.putString("tot_menu5", tot_menu5);
                         editor.putInt("tot_price", tot_price);
                         editor.commit();
                         topTV5.setOnClickListener(new View.OnClickListener() {
@@ -228,7 +258,8 @@ public class Cart extends AppCompatActivity {
                                 Toast toast = Toast.makeText(getApplicationContext(), "삭제되었습니다.", Toast.LENGTH_SHORT);
                                 toast.setGravity(Gravity.CENTER, 0, 0);
                                 toast.show();
-
+                                editor.putString("tot_menu5", null);
+                                editor.commit();
                                 tot_price= tot_price - Integer.parseInt(""+snapshot.child("content").getValue());
                                 container.removeView(topTV5);
                                 textView5.setText(String.valueOf(tot_price));
@@ -255,6 +286,8 @@ public class Cart extends AppCompatActivity {
                         tot_price += Integer.parseInt("" + snapshot.child("content").getValue());
                         textView5.setText(String.valueOf(tot_price));
                         editor.putInt("tot_price", tot_price);
+                        tot_menu6 =""+ snapshot.child("title").getValue();
+                        editor.putString("tot_menu6", tot_menu6);
                         editor.commit();
                         topTV6.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -263,7 +296,8 @@ public class Cart extends AppCompatActivity {
                                 Toast toast = Toast.makeText(getApplicationContext(), "삭제되었습니다.", Toast.LENGTH_SHORT);
                                 toast.setGravity(Gravity.CENTER, 0, 0);
                                 toast.show();
-
+                                editor.putString("tot_menu6", null);
+                                editor.commit();
                                 tot_price= tot_price - Integer.parseInt(""+snapshot.child("content").getValue());
                                 container.removeView(topTV6);
                                 textView5.setText(String.valueOf(tot_price));
@@ -290,6 +324,8 @@ public class Cart extends AppCompatActivity {
                         tot_price += Integer.parseInt("" + snapshot.child("content").getValue());
                         textView5.setText(String.valueOf(tot_price));
                         editor.putInt("tot_price", tot_price);
+                        tot_menu7 =""+ snapshot.child("title").getValue();
+                        editor.putString("tot_menu7", tot_menu7);
                         editor.commit();
                         topTV7.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -298,7 +334,8 @@ public class Cart extends AppCompatActivity {
                                 Toast toast = Toast.makeText(getApplicationContext(), "삭제되었습니다.", Toast.LENGTH_SHORT);
                                 toast.setGravity(Gravity.CENTER, 0, 0);
                                 toast.show();
-
+                                editor.putString("tot_menu7", null);
+                                editor.commit();
                                 tot_price= tot_price - Integer.parseInt(""+snapshot.child("content").getValue());
                                 container.removeView(topTV7);
                                 textView5.setText(String.valueOf(tot_price));
@@ -325,6 +362,8 @@ public class Cart extends AppCompatActivity {
                         tot_price += Integer.parseInt("" + snapshot.child("content").getValue());
                         textView5.setText(String.valueOf(tot_price));
                         editor.putInt("tot_price", tot_price);
+                        tot_menu8 =""+ snapshot.child("title").getValue();
+                        editor.putString("tot_menu8", tot_menu8);
                         editor.commit();
                         topTV8.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -333,7 +372,8 @@ public class Cart extends AppCompatActivity {
                                 Toast toast = Toast.makeText(getApplicationContext(), "삭제되었습니다.", Toast.LENGTH_SHORT);
                                 toast.setGravity(Gravity.CENTER, 0, 0);
                                 toast.show();
-
+                                editor.putString("tot_menu8", null);
+                                editor.commit();
                                 tot_price= tot_price - Integer.parseInt(""+snapshot.child("content").getValue());
                                 container.removeView(topTV8);
                                 textView5.setText(String.valueOf(tot_price));
@@ -359,6 +399,8 @@ public class Cart extends AppCompatActivity {
                         container.addView(topTV9);
                         tot_price += Integer.parseInt("" + snapshot.child("content").getValue());
                         textView5.setText(String.valueOf(tot_price));
+                        tot_menu9 =""+ snapshot.child("title").getValue();
+                        editor.putString("tot_menu9", tot_menu9);
                         editor.putInt("tot_price", tot_price);
                         editor.commit();
                         topTV9.setOnClickListener(new View.OnClickListener() {
@@ -368,7 +410,8 @@ public class Cart extends AppCompatActivity {
                                 Toast toast = Toast.makeText(getApplicationContext(), "삭제되었습니다.", Toast.LENGTH_SHORT);
                                 toast.setGravity(Gravity.CENTER, 0, 0);
                                 toast.show();
-
+                                editor.putString("tot_menu9", null);
+                                editor.commit();
                                 tot_price= tot_price - Integer.parseInt(""+snapshot.child("content").getValue());
                                 container.removeView(topTV9);
                                 textView5.setText(String.valueOf(tot_price));
@@ -394,6 +437,8 @@ public class Cart extends AppCompatActivity {
                         container.addView(topTV10);
                         tot_price += Integer.parseInt("" + snapshot.child("content").getValue());
                         textView5.setText(String.valueOf(tot_price));
+                        tot_menu10 =""+ snapshot.child("title").getValue();
+                        editor.putString("tot_menu10", tot_menu10);
                         editor.putInt("tot_price", tot_price);
                         editor.commit();
                         topTV10.setOnClickListener(new View.OnClickListener() {
@@ -403,7 +448,8 @@ public class Cart extends AppCompatActivity {
                                 Toast toast = Toast.makeText(getApplicationContext(), "삭제되었습니다.", Toast.LENGTH_SHORT);
                                 toast.setGravity(Gravity.CENTER, 0, 0);
                                 toast.show();
-
+                                editor.putString("tot_menu10", null);
+                                editor.commit();
                                 tot_price= tot_price - Integer.parseInt(""+snapshot.child("content").getValue());
                                 container.removeView(topTV10);
                                 textView5.setText(String.valueOf(tot_price));
@@ -431,9 +477,6 @@ public class Cart extends AppCompatActivity {
         });
 
 
-
-
-
     }
     public String KaKaoGo() {
         pref = getSharedPreferences("pref", MODE_PRIVATE);
@@ -452,14 +495,14 @@ public class Cart extends AppCompatActivity {
 
             OutputStream os = conn.getOutputStream();
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8")); //캐릭터셋 설정
-String m_name=pref.getString("menu_name1","");
+
             Log.d("Testing1", pref.getString("menu_name1","")+","+pref.getInt("tot_price", 0));
             writer.write(
                     "cid=TC0ONETIME&" +
                             "partner_order_id=partner_order_id&" +
                             "partner_user_id=partner_user_id&" +
                             "item_name=" +
-                             m_name+
+                            pref.getString("menu_name1","") +
                             "&" +
                             "quantity=1&" +
                             "total_amount=" +
@@ -510,6 +553,86 @@ String m_name=pref.getString("menu_name1","");
         return jsonObject.getString("next_redirect_mobile_url");
     }
 
+
+    public class registDB extends AsyncTask<Void, Integer, Void> {
+
+        @Override
+        protected Void doInBackground(Void... unused) {
+            mMinute= pref.getInt("mMinute",0);
+            mHour = pref.getInt("mHour",0);
+            Log.e("time",String.format("%d:%d", mHour, mMinute));
+            tot_menu1 = pref.getString("tot_menu1","");
+            tot_menu2 = pref.getString("tot_menu2","");
+            tot_menu3 = pref.getString("tot_menu3","");
+            tot_menu4 = pref.getString("tot_menu4","");
+            tot_menu5 = pref.getString("tot_menu5","");
+            tot_menu6 = pref.getString("tot_menu6","");
+            tot_menu7 = pref.getString("tot_menu7","");
+            tot_menu8 = pref.getString("tot_menu8","");
+            tot_menu9 = pref.getString("tot_menu9","");
+            tot_menu10 = pref.getString("tot_menu10","");
+            getID = pref.getString("id","");
+            String[] tot_menu ={tot_menu1,tot_menu2, tot_menu3,tot_menu4,tot_menu5,tot_menu6,tot_menu7,tot_menu8,tot_menu9,tot_menu10};
+            Log.e("tot_menu",String.valueOf(tot_menu.length));
+            Arrays.sort(tot_menu);
+            int size = 10;
+            for(int i=0; i<size; i++) {
+                if (tot_menu[i] == null) {
+                    for (int k = i; k < size - 1; k++) {
+                        tot_menu[k] = tot_menu[k + 1];
+                    }
+                    size--;
+                }
+            }
+            for(int i=0;i<size;i++) {
+                try {
+                    /* 서버연결 */
+                    URL url1 = new URL(
+                            "http://116.32.57.232/snclib_join.php");
+                    HttpURLConnection conn = (HttpURLConnection) url1.openConnection();
+                    conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                    conn.setRequestMethod("POST");
+                    conn.setDoInput(true);
+
+                    conn.connect();
+                    /* 안드로이드 -> 서버 파라메터값 전달 */
+                    OutputStream outs = conn.getOutputStream();
+
+                    String param = "LM_name=" +"'" +getID+"'" + "&LS_ordertime=" + "'"+String.format("%d:%d:00", mHour, mMinute) +"'"+ "&M_name=" +"'" +tot_menu[i] + "'";
+                    Log.v("param", param);
+                    outs.write(param.getBytes("UTF-8"));
+
+                    outs.flush();
+                    outs.close();
+
+                    /* 서버 -> 안드로이드 파라메터값 전달 */
+                    InputStream is = null;
+                    BufferedReader in = null;
+                    String data = "";
+
+                    is = conn.getInputStream();
+                    in = new BufferedReader(new InputStreamReader(is), 8 * 1024);
+                    String line = null;
+                    StringBuffer buff = new StringBuffer();
+                    while ((line = in.readLine()) != null) {
+                        buff.append(line + "\n");
+                    }
+                    data = buff.toString().trim();
+                    Log.e("RECV DATA", data);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            } //for
+            return null;
+        }
+
+    }
+
+
+
     public void ClickMe(View view){
         try {
             app_url= getURL(KaKaoGo());
@@ -518,55 +641,18 @@ String m_name=pref.getString("menu_name1","");
         }
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(app_url));
         startActivity(intent);
-
-
-
-        Menu_Reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    if(count==1) {
-                        databaseReference.push().setValue("" + snapshot.getValue());
-                    }
-                    else if(count==2) {
-                        databaseReference.push().setValue("" + snapshot.getValue());
-                    }
-                    else if(count==3) {
-                        databaseReference.push().setValue("" + snapshot.getValue());
-                    }
-                    else if(count==4) {
-                        databaseReference.push().setValue("" + snapshot.getValue());
-                    }
-                    else if(count==5) {
-                        databaseReference.push().setValue("" + snapshot.getValue());
-                    }
-                    else if(count==6) {
-                        databaseReference.push().setValue("" + snapshot.getValue());
-                    }
-                    else if(count==7) {
-                        databaseReference.push().setValue("" + snapshot.getValue());
-                    }
-                    else if(count==8) {
-                        databaseReference.push().setValue("" + snapshot.getValue());
-                    }
-                    else if(count==9) {
-                        databaseReference.push().setValue("" + snapshot.getValue());
-                    }
-                    else if(count==10) {
-                        databaseReference.push().setValue("" + snapshot.getValue());
-                    }
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
-        databaseReference.child("total_money").push().setValue(tot_price);
+        String[] test ={"12",null,null};
+        Log.e("test",String.valueOf(test.length));
+        sId = "아주대졸업제발";
+        sPw = "졸업하면 좋겠다";
         SharedPreferences.Editor editor = pref.edit();
         Menu_Reference.removeValue();
         Value_Reference.removeValue();
         editor.putInt("reset", 1);
         editor.commit();
+
+        registDB rdb = new registDB();
+        rdb.execute();
+
     }
 }

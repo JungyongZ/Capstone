@@ -41,9 +41,19 @@ import javax.net.ssl.HttpsURLConnection;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.DatabaseReference;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
+import android.widget.DatePicker;
+import android.widget.TimePicker;
+
 public class MenuActivity extends AppCompatActivity {
+    int mDay, mHour, mMinute, mYear,mMonth;
+    TextView mTxtTime, mTxtDate;
     TextView textView;
-   int count =1;
+    int count =1;
     private RecyclerView mVerticalView;
     private VerticalAdapter mAdapter;
     private LinearLayoutManager mLayoutManager;
@@ -73,6 +83,9 @@ public class MenuActivity extends AppCompatActivity {
         StrictMode.setThreadPolicy(policy);
         mVerticalView = (RecyclerView) findViewById(R.id.vertical_list);
 
+        mTxtTime = (TextView)findViewById(R.id.txttime);
+        mTxtDate = (TextView)findViewById(R.id.txtdate);
+
         Intent intent3 = getIntent();
         String name = intent3.getExtras().getString("name");
         textView = (TextView) findViewById(R.id.resname);
@@ -83,9 +96,9 @@ public class MenuActivity extends AppCompatActivity {
         String con = intent3.getExtras().getString("stat");
         textView = (TextView) findViewById(R.id.rescon);
         textView.setText(con);
-      TAG_RESULTS = intent3.getExtras().getString("menu");
-      TAG_RESULTS2 = intent3.getExtras().getString("img");
-      Log.v("TAG_ADD:",TAG_ADD);
+        TAG_RESULTS = intent3.getExtras().getString("menu");
+        TAG_RESULTS2 = intent3.getExtras().getString("img");
+        Log.v("TAG_ADD:",TAG_ADD);
       /*
         intent2.putExtra("tel",litem3.get(position).tel);
         intent2.putExtra("menu",litem3.get(position).tag_1);
@@ -94,9 +107,137 @@ public class MenuActivity extends AppCompatActivity {
 */
         getData("http://116.32.57.232/PHP_connection.php"); //타깃 도메인
 
+        Calendar cal = new GregorianCalendar();
+        mYear = cal.get(Calendar.YEAR);
+        mMonth = cal.get(Calendar.MONTH);
+        mDay = cal.get(Calendar.DAY_OF_MONTH);
+        mHour = cal.get(Calendar.HOUR_OF_DAY);
+        mMinute = cal.get(Calendar.MINUTE);
+
+        UpdateNow();
 
     }
 
+    public void mOnClick(View v){
+
+        switch(v.getId()){
+
+            //날짜 대화상자 버튼이 눌리면 대화상자를 보여줌
+
+            case R.id.btnchangedate:
+
+                //여기서 리스너도 등록함
+
+                new DatePickerDialog(this, mDateSetListener, mYear,
+
+                        mMonth, mDay).show();
+
+                break;
+
+
+
+            //시간 대화상자 버튼이 눌리면 대화상자를 보여줌
+
+            case R.id.btnchangetime:
+
+                //여기서 리스너도 등록함
+
+                new TimePickerDialog(this, mTimeSetListener, mHour,
+
+                        mMinute, false).show();
+
+                break;
+
+        }
+
+    }
+
+
+
+    //날짜 대화상자 리스너 부분
+
+    DatePickerDialog.OnDateSetListener mDateSetListener =
+
+            new DatePickerDialog.OnDateSetListener() {
+
+
+
+                @Override
+
+                public void onDateSet(DatePicker view, int year, int monthOfYear,
+
+                                      int dayOfMonth) {
+
+                    // TODO Auto-generated method stub
+
+                    //사용자가 입력한 값을 가져온뒤
+
+                    mYear = year;
+
+                    mMonth = monthOfYear;
+
+                    mDay = dayOfMonth;
+
+                    //텍스트뷰의 값을 업데이트함
+
+                    UpdateNow();
+
+                }
+
+            };
+
+
+
+    //시간 대화상자 리스너 부분
+
+    TimePickerDialog.OnTimeSetListener mTimeSetListener =
+
+            new TimePickerDialog.OnTimeSetListener() {
+
+
+
+                @Override
+
+                public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+
+                    // TODO Auto-generated method stub
+
+                    //사용자가 입력한 값을 가져온뒤
+
+                    mHour = hourOfDay;
+
+                    mMinute = minute;
+
+                    final SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+                    final SharedPreferences.Editor editor = pref.edit();
+                    editor.putInt("mHour",mHour);
+                    editor.putInt("mMinute",mMinute);
+                    editor.commit();
+                    //텍스트뷰의 값을 업데이트함
+
+                    UpdateNow();
+
+
+
+                }
+
+            };
+
+
+
+    //텍스트뷰의 값을 업데이트 하는 메소드
+
+    void UpdateNow(){
+
+        mTxtDate.setText(String.format("%d/%d/%d", mYear,
+
+                mMonth + 1, mDay));
+
+        mTxtTime.setText(String.format("%d:%d", mHour, mMinute));
+
+
+
+    }
 
 
     public void ClickMe(View view){
@@ -105,6 +246,7 @@ public class MenuActivity extends AppCompatActivity {
         startActivity(intent2);
 
     }
+
 
     ///////////////////////////
     protected void showList() {
@@ -117,24 +259,28 @@ public class MenuActivity extends AppCompatActivity {
             peoples = jsonObj.getJSONArray(TAG_RESULTS);        //Tag_Result의 값에 따라 희망 배열 순번의 값을 불러옴을 확인
             Log.v("haha","1페이지 결과3"+peoples);
 
-Log.v("c확인3", String.valueOf(peoples.length()));
+            Log.v("c확인3", String.valueOf(peoples.length()));
             for (int i = 0; i < peoples.length(); i++) {
                 JSONObject c = peoples.getJSONObject(i);
                 Log.v("c확인", String.valueOf(c));
                 String id = c.getString(TAG_ID);
                 Log.v("c확인2",id);
                 String name = c.getString(TAG_NAME);
-Log.v("id,name",id + name);
+                Log.v("id,name",id + name);
 
                 list.add(new ListViewItem(id,name));
             }
             listView = (ListView) findViewById(R.id.ListView02);
-           CustomAdapter adp = new CustomAdapter(getApplicationContext(), R.layout.list_view2, list);
+            CustomAdapter adp = new CustomAdapter(getApplicationContext(), R.layout.list_view2, list);
             listView.setAdapter(adp);
 
 
             final SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
             final SharedPreferences.Editor editor = pref.edit();
+            Intent intent4 = getIntent();
+            String name = intent4.getExtras().getString("name");
+            editor.putString("id",name);
+            editor.commit();
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -191,7 +337,7 @@ Log.v("id,name",id + name);
             for (int i = 0; i < peoples.length(); i++){
                 JSONObject c = peoples.getJSONObject(i);
                 String add = c.getString(TAG_ADD);
-        Log.v("add",add);
+                Log.v("add",add);
                 try {
                     URL url = new URL(add);
                     URLConnection conn = url.openConnection();
